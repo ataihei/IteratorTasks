@@ -149,7 +149,7 @@ namespace IteratorTasks
 
         internal static void Propagate<T>(this TaskCompletionSource<T> tcs, Task task)
         {
-            if (task.IsCompleted)
+            if (task.Status == TaskStatus.RanToCompletion)
             {
                 var tt = task as Task<T>;
                 tcs.SetResult(tt == null ? default(T) : tt.Result);

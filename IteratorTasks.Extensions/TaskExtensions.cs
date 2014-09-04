@@ -15,7 +15,7 @@ namespace IteratorTasks
         {
             t.ContinueWith(x =>
             {
-                if (x.IsCompleted)
+                if (x.Status == TaskStatus.RanToCompletion)
                     a();
             });
             return t;
@@ -32,7 +32,7 @@ namespace IteratorTasks
         {
             Action<Task<T>> continuation = x =>
             {
-                if (x.IsCompleted)
+                if (x.Status == TaskStatus.RanToCompletion)
                     a(x.Result);
             };
             t.ContinueWith(continuation);

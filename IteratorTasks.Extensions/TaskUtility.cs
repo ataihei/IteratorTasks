@@ -58,7 +58,7 @@ namespace IteratorTasks
 
                 ((IAwaiter)task).OnCompleted(() =>
                 {
-                    if (task.IsCompleted) tcs.SetResult(task.Result);
+                    if (task.Status == TaskStatus.RanToCompletion) tcs.SetResult(task.Result);
                     else if (retryCount == 0)
                     {
                         tcs.SetException(task.Error);

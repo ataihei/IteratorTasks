@@ -23,31 +23,31 @@ namespace IteratorTasks
 
         public void SetCanceled()
         {
-            if (_task.IsDone)
+            if (_task.IsCompleted)
                 return;
             ((ITaskInternal)_task).Cancel();
         }
 
         public void SetException(Exception exception)
         {
-            if (_task.IsDone)
+            if (_task.IsCompleted)
                 return;
             ((ITaskInternal)_task).SetException(exception);
         }
 
         public void SetResult(T result)
         {
-            if (_task.IsDone)
+            if (_task.IsCompleted)
                 return;
             ((ITaskInternal)_task).SetResult(result);
         }
 
         internal void Propagate(Task task)
         {
-            if (_task.IsDone)
+            if (_task.IsCompleted)
                 return;
 
-            if (task.IsCompleted)
+            if (task.Status == TaskStatus.RanToCompletion)
             {
                 var tt = task as Task<T>;
                 SetResult(tt == null ? default(T) : tt.Result);

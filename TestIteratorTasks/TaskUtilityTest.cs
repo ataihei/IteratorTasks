@@ -76,7 +76,7 @@ namespace TestIteratorTasks
             // 50秒でタイムアウトのものを100秒放置して、タイムアウトさせる
             {
                 var t = TaskUtility.RunWithTimeout(ct => Util.Delay(T2, ct), TimeSpan.FromMilliseconds(T1));
-                while (!t.IsDone)
+                while (!t.IsCompleted)
                 {
                     scheduler.Update();
                     Thread.Sleep(1);
@@ -88,7 +88,7 @@ namespace TestIteratorTasks
             // 100秒でタイムアウトのものを50秒放置後、ちゃんと完了させる
             {
                 var t = TaskUtility.RunWithTimeout(ct => Util.Delay(T1, ct), TimeSpan.FromMilliseconds(T2));
-                while (!t.IsDone)
+                while (!t.IsCompleted)
                 {
                     scheduler.Update();
                     Thread.Sleep(1);

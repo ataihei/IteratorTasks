@@ -92,14 +92,13 @@ namespace IteratorTasks
         /// </summary>
         public TaskStatus Status { get; protected internal set; }
 
-        public bool IsDone { get { return IsCompleted || IsCanceled || IsFaulted; } }
-        public bool IsCompleted { get { return Status == TaskStatus.RanToCompletion; } }
+        public bool IsCompleted { get { return Status == TaskStatus.RanToCompletion || IsCanceled || IsFaulted; } }
         public bool IsCanceled { get { return Status == TaskStatus.Canceled; } }
         public bool IsFaulted { get { return Status == TaskStatus.Faulted; } }
 
         void IAwaiter.OnCompleted(Action continuation)
         {
-            if (IsDone)
+            if (IsCompleted)
                 Scheduler.Post(continuation);
             else
             {
@@ -341,7 +340,7 @@ namespace IteratorTasks
         public static Task Run(Func<IEnumerator> routine, TaskScheduler scheduler)
         {
             var t = new Task(routine);
-            if (!t.IsDone) t.Start(scheduler ?? DefaultScheduler);
+            if (!t.IsCompleted) t.Start(scheduler ?? DefaultScheduler);
             return t;
         }
 
@@ -359,7 +358,7 @@ namespace IteratorTasks
         public static Task<T> Run<T>(Func<Action<T>, IEnumerator> routine, TaskScheduler scheduler)
         {
             var t = new Task<T>(routine);
-            if (!t.IsDone) t.Start(scheduler ?? DefaultScheduler);
+            if (!t.IsCompleted) t.Start(scheduler ?? DefaultScheduler);
             return t;
         }
 
