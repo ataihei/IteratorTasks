@@ -51,6 +51,7 @@
     <Compile Include="Tasks\TaskCanceledException.cs" />
     <Compile Include="Tasks\TaskCompletionSource.cs" />
     <Compile Include="Tasks\TaskCompletionSourceExtensions.cs" />
+    <Compile Include="Tasks\Task_WhenAny.cs" />
     <Compile Include="Tasks\Task_Timer.cs" />
     <Compile Include="Tasks\TaskScheduler.cs" />
     <Compile Include="Tasks\TaskSchedulerStatus.cs" />
