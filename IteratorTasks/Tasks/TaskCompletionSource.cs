@@ -21,24 +21,45 @@ namespace IteratorTasks
             ((ITaskInternal)_task).ForceCancel();
         }
 
-        public void SetCanceled()
+        public void TrySetCanceled()
         {
             if (_task.IsCompleted)
                 return;
             ((ITaskInternal)_task).Cancel();
         }
 
-        public void SetException(Exception exception)
+        public void TrySetException(Exception exception)
         {
             if (_task.IsCompleted)
                 return;
             ((ITaskInternal)_task).SetException(exception);
         }
 
-        public void SetResult(T result)
+        public void TrySetResult(T result)
         {
             if (_task.IsCompleted)
                 return;
+            ((ITaskInternal)_task).SetResult(result);
+        }
+
+        public void SetCanceled()
+        {
+            if (_task.IsCompleted)
+                throw new InvalidOperationException();
+            ((ITaskInternal)_task).Cancel();
+        }
+
+        public void SetException(Exception exception)
+        {
+            if (_task.IsCompleted)
+                throw new InvalidOperationException();
+            ((ITaskInternal)_task).SetException(exception);
+        }
+
+        public void SetResult(T result)
+        {
+            if (_task.IsCompleted)
+                throw new InvalidOperationException();
             ((ITaskInternal)_task).SetResult(result);
         }
 
