@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6C013095-537E-428A-9632-F5B18EE0EDCA}</ProjectGuid>
+    <ProjectGuid>{9AA09159-8567-4F4B-9871-24B43DECF6AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IteratorTasks</RootNamespace>
-    <AssemblyName>IteratorTasks</AssemblyName>
+    <AssemblyName>IteratorTasks.Extensions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,28 +38,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AggregateException.cs" />
-    <Compile Include="IAwaiter.cs" />
-    <Compile Include="IProgress.cs" />
-    <Compile Include="Progress.cs" />
+    <Compile Include="AsyncAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tasks\CancellationToken.cs" />
-    <Compile Include="Tasks\CancellationTokenSource.cs" />
-    <Compile Include="Tasks\Task.cs" />
-    <Compile Include="Tasks\TaskCanceledException.cs" />
-    <Compile Include="Tasks\TaskCompletionSource.cs" />
-    <Compile Include="Tasks\TaskCompletionSourceExtensions.cs" />
-    <Compile Include="Tasks\Task_Timer.cs" />
-    <Compile Include="Tasks\TaskScheduler.cs" />
-    <Compile Include="Tasks\TaskSchedulerStatus.cs" />
-    <Compile Include="Tasks\TaskStatus.cs" />
-    <Compile Include="Tasks\Task_T.cs" />
+    <Compile Include="TaskEx.cs" />
+    <Compile Include="TaskExtensions.cs" />
+    <Compile Include="TaskUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IteratorTasks\IteratorTasks.csproj">
+      <Project>{6c013095-537e-428a-9632-f5b18ee0edca}</Project>
+      <Name>IteratorTasks</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

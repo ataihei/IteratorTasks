@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks", "IteratorTa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIteratorTasks", "TestIteratorTasks\TestIteratorTasks.csproj", "{DD33110F-2F7F-432E-A48F-E22FE07B9E27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks.Extensions", "IteratorTasks.Extensions\IteratorTasks.Extensions.csproj", "{9AA09159-8567-4F4B-9871-24B43DECF6AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DD33110F-2F7F-432E-A48F-E22FE07B9E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD33110F-2F7F-432E-A48F-E22FE07B9E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD33110F-2F7F-432E-A48F-E22FE07B9E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA09159-8567-4F4B-9871-24B43DECF6AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA09159-8567-4F4B-9871-24B43DECF6AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA09159-8567-4F4B-9871-24B43DECF6AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA09159-8567-4F4B-9871-24B43DECF6AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

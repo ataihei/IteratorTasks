@@ -66,6 +66,10 @@
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IteratorTasks.Extensions\IteratorTasks.Extensions.csproj">
+      <Project>{9aa09159-8567-4f4b-9871-24b43decf6af}</Project>
+      <Name>IteratorTasks.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IteratorTasks\IteratorTasks.csproj">
       <Project>{6c013095-537e-428a-9632-f5b18ee0edca}</Project>
       <Name>IteratorTasks</Name>
