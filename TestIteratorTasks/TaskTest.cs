@@ -4,361 +4,361 @@ using IteratorTasks;
 
 namespace TestIteratorTasks
 {
-	[TestClass]
-	public class TaskTest
-	{
-		[TestMethod]
-		public void Nフレーム実行するイテレーターが丁度N引く1フレームIsCompleted_falseになってることを確認()
-		{
-			// 開始直後に RunOnce する仕様になったので、Update ループ回数は1少ない
-			const int N = 50;
+    [TestClass]
+    public class TaskTest
+    {
+        [TestMethod]
+        public void Nフレーム実行するイテレーターが丁度N引く1フレームIsCompleted_falseになってることを確認()
+        {
+            // 開始直後に RunOnce する仕様になったので、Update ループ回数は1少ない
+            const int N = 50;
 
-			var task = Coroutines.NFrameTask(N);
+            var task = Coroutines.NFrameTask(N);
 
-			var scheduler = Task.DefaultScheduler;
+            var scheduler = Task.DefaultScheduler;
 
-			for (int i = 0; i < 2 * N; i++)
-			{
-				scheduler.Update();
+            for (int i = 0; i < 2 * N; i++)
+            {
+                scheduler.Update();
 
-				if (i < N - 1)
-					Assert.IsFalse(task.IsCompleted, "expected false, but actual true on i = " + i);
-				else
-					Assert.IsTrue(task.IsCompleted, "expected true, but actual false on i = " + i);
-			}
-		}
+                if (i < N - 1)
+                    Assert.IsFalse(task.IsCompleted, "expected false, but actual true on i = " + i);
+                else
+                    Assert.IsTrue(task.IsCompleted, "expected true, but actual false on i = " + i);
+            }
+        }
 
-		[TestMethod]
-		public void new_Taskでコールドスタート_Task_Runでホットスタート()
-		{
-			var x = 10;
+        [TestMethod]
+        public void new_Taskでコールドスタート_Task_Runでホットスタート()
+        {
+            var x = 10;
 
-			var t1 = new Task<double>(c => Coroutines.F1Async(x, c));
+            var t1 = new Task<double>(c => Coroutines.F1Async(x, c));
 
-			Assert.AreEqual(TaskStatus.Created, t1.Status);
+            Assert.AreEqual(TaskStatus.Created, t1.Status);
 
-			t1.Start();
+            t1.Start();
 
-			Assert.AreEqual(TaskStatus.Running, t1.Status);
+            Assert.AreEqual(TaskStatus.Running, t1.Status);
 
-			var t2 = Task.Run<double>(c => Coroutines.F1Async(x, c));
+            var t2 = Task.Run<double>(c => Coroutines.F1Async(x, c));
 
-			Assert.AreEqual(TaskStatus.Running, t2.Status);
+            Assert.AreEqual(TaskStatus.Running, t2.Status);
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.AreEqual(TaskStatus.RanToCompletion, t1.Status);
-			Assert.AreEqual(TaskStatus.RanToCompletion, t2.Status);
-		}
+            Assert.AreEqual(TaskStatus.RanToCompletion, t1.Status);
+            Assert.AreEqual(TaskStatus.RanToCompletion, t2.Status);
+        }
 
-		[TestMethod]
-		public void Task_Tで正常終了するとResultに結果が入る()
-		{
-			var x = 10;
-			var y = Coroutines.F1(x);
+        [TestMethod]
+        public void Task_Tで正常終了するとResultに結果が入る()
+        {
+            var x = 10;
+            var y = Coroutines.F1(x);
 
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c))
-				.OnComplete(t => Assert.AreEqual(t.Result, y));
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c))
+                .OnComplete(t => Assert.AreEqual(t.Result, y));
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.AreEqual(y, task.Result);
-		}
+            Assert.AreEqual(y, task.Result);
+        }
 
-		[TestMethod]
-		public void 一度完了したタスク_何度でも結果が取れる()
-		{
-			var x = 10;
-			var y = Coroutines.F1(x);
+        [TestMethod]
+        public void 一度完了したタスク_何度でも結果が取れる()
+        {
+            var x = 10;
+            var y = Coroutines.F1(x);
 
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.AreEqual(y, task.Result);
-			Assert.AreEqual(y, task.Result);
-			Assert.AreEqual(y, task.Result);
-			Assert.AreEqual(y, task.Result);
-		}
+            Assert.AreEqual(y, task.Result);
+            Assert.AreEqual(y, task.Result);
+            Assert.AreEqual(y, task.Result);
+            Assert.AreEqual(y, task.Result);
+        }
 
-		[TestMethod]
-		public void タスク完了時にContinueWithが呼ばれる()
-		{
-			var x = 10;
-			var y = Coroutines.F1(x);
+        [TestMethod]
+        public void タスク完了時にContinueWithが呼ばれる()
+        {
+            var x = 10;
+            var y = Coroutines.F1(x);
 
-			bool called = false;
+            bool called = false;
 
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
-			task.ContinueWith(t => called = true);
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
+            task.ContinueWith(t => called = true);
 
-			Assert.IsFalse(called);
+            Assert.IsFalse(called);
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.IsTrue(called);
-		}
+            Assert.IsTrue(called);
+        }
 
-		[TestMethod]
-		public void エラー終了でもContinueWithが呼ばれる()
-		{
-			bool called = false;
+        [TestMethod]
+        public void エラー終了でもContinueWithが呼ばれる()
+        {
+            bool called = false;
 
-			var task = Task.Run<int>(Coroutines.FErrorAsync);
-			task.ContinueWith(t => called = true);
+            var task = Task.Run<int>(Coroutines.FErrorAsync);
+            task.ContinueWith(t => called = true);
 
-			Assert.IsFalse(called);
+            Assert.IsFalse(called);
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.IsTrue(called);
-		}
+            Assert.IsTrue(called);
+        }
 
-		[TestMethod]
-		public void ForceCancel後はContinueWithが呼ばれない()
-		{
-			var x = 10;
-			var y = Coroutines.F1(x);
+        [TestMethod]
+        public void ForceCancel後はContinueWithが呼ばれない()
+        {
+            var x = 10;
+            var y = Coroutines.F1(x);
 
-			bool called = false;
+            bool called = false;
 
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
-			task.ForceCancel();
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
+            task.ForceCancel();
 
-			task.ContinueWith(t => called = true);
+            task.ContinueWith(t => called = true);
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.IsFalse(called);
-		}
+            Assert.IsFalse(called);
+        }
 
-		[TestMethod]
-		public void 完了済みのタスクでContinueWithすると_次のUpdateでコールバックが呼ばれる()
-		{
-			var x = 10;
-			var y = Coroutines.F1(x);
+        [TestMethod]
+        public void 完了済みのタスクでContinueWithすると_次のUpdateでコールバックが呼ばれる()
+        {
+            var x = 10;
+            var y = Coroutines.F1(x);
 
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(10);
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(10);
 
-			Assert.IsTrue(task.IsCompleted);
+            Assert.IsTrue(task.IsCompleted);
 
-			bool called = false;
+            bool called = false;
 
-			task.ContinueWith(t => called = true);
-			scheduler.Update();
+            task.ContinueWith(t => called = true);
+            scheduler.Update();
 
-			Assert.IsTrue(called);
-		}
+            Assert.IsTrue(called);
+        }
 
-		[TestMethod]
-		public void 開始前_実行中_正常終了_エラー終了_がわかる()
-		{
-			var scheduler = Task.DefaultScheduler;
+        [TestMethod]
+        public void 開始前_実行中_正常終了_エラー終了_がわかる()
+        {
+            var scheduler = Task.DefaultScheduler;
 
-			var x = 10.0;
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
+            var x = 10.0;
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
 
-			Assert.AreEqual(TaskStatus.Running, task.Status);
+            Assert.AreEqual(TaskStatus.Running, task.Status);
 
-			scheduler.Update(10);
+            scheduler.Update(10);
 
-			Assert.AreEqual(TaskStatus.RanToCompletion, task.Status);
+            Assert.AreEqual(TaskStatus.RanToCompletion, task.Status);
 
-			var errorTask = Task.Run(Coroutines.FErrorAsync);
+            var errorTask = Task.Run(Coroutines.FErrorAsync);
 
-			Assert.AreEqual(TaskStatus.Running, errorTask.Status);
+            Assert.AreEqual(TaskStatus.Running, errorTask.Status);
 
-			scheduler.Update(10);
+            scheduler.Update(10);
 
-			Assert.AreEqual(TaskStatus.Faulted, errorTask.Status);
-		}
+            Assert.AreEqual(TaskStatus.Faulted, errorTask.Status);
+        }
 
-		[TestMethod]
-		public void 実行途中のタスクを再スタートしようとしたら例外を出す()
-		{
-			var x = 10.0;
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
+        [TestMethod]
+        public void 実行途中のタスクを再スタートしようとしたら例外を出す()
+        {
+            var x = 10.0;
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update();
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update();
 
-			Assert.AreEqual(TaskStatus.Running, task.Status);
+            Assert.AreEqual(TaskStatus.Running, task.Status);
 
-			try
-			{
-				task.Start();
-			}
-			catch (InvalidOperationException)
-			{
-				return;
-			}
+            try
+            {
+                task.Start();
+            }
+            catch (InvalidOperationException)
+            {
+                return;
+            }
 
-			Assert.Fail();
-		}
+            Assert.Fail();
+        }
 
-		[TestMethod]
-		public void タスク中で例外が出たらErrorプロパティに例外が入る()
-		{
-			var task = Task.Run<int>(Coroutines.FErrorAsync)
-				.OnComplete(t =>
-				{
-					Assert.IsTrue(t.IsFaulted);
-					Assert.IsNotNull(t.Error);
-				});
+        [TestMethod]
+        public void タスク中で例外が出たらErrorプロパティに例外が入る()
+        {
+            var task = Task.Run<int>(Coroutines.FErrorAsync)
+                .OnComplete(t =>
+                {
+                    Assert.IsTrue(t.IsFaulted);
+                    Assert.IsNotNull(t.Error);
+                });
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(20);
-		}
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(20);
+        }
 
-		[TestMethod]
-		public void タスクが正常終了した時だけThenが呼ばれる()
-		{
-			var value = 10.0;
-			var t1 = Task.Run<double>(c => Coroutines.F1Async(value, c));
+        [TestMethod]
+        public void タスクが正常終了した時だけThenが呼ばれる()
+        {
+            var value = 10.0;
+            var t1 = Task.Run<double>(c => Coroutines.F1Async(value, c));
 
-			double result1 = 0;
-			int result2 = 0;
+            double result1 = 0;
+            int result2 = 0;
 
-			t1.Then(x => result1 = x); // 呼ばれる
+            t1.Then(x => result1 = x); // 呼ばれる
 
-			var t2 = Task.Run<int>(Coroutines.FErrorAsync);
+            var t2 = Task.Run<int>(Coroutines.FErrorAsync);
 
-			t2.Then(x => result2 = -1); // 呼ばれない
+            t2.Then(x => result2 = -1); // 呼ばれない
 
-			Assert.AreEqual(0.0, result1);
-			Assert.AreEqual(0, result2);
+            Assert.AreEqual(0.0, result1);
+            Assert.AreEqual(0, result2);
 
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(20);
-
-			Assert.AreEqual(Coroutines.F1(value), result1);
-			Assert.AreEqual(0, result2);
-		}
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(20);
+
+            Assert.AreEqual(Coroutines.F1(value), result1);
+            Assert.AreEqual(0, result2);
+        }
 
-		[TestMethod]
-		public void タスク中で例外が出たらOnErrorが呼ばれる_特定の型の例外だけ拾う()
-		{
-			var notSupportedCalled = false;
-			var outOfRangeCalled = false;
-
-			var task = Task.Run(Coroutines.FErrorAsync)
-				.OnError<NotSupportedException>(e => notSupportedCalled = true) // 呼ばれる
-				.OnError<IndexOutOfRangeException>(e => outOfRangeCalled = true); // 呼ばれない
-
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(20);
-
-			Assert.IsTrue(notSupportedCalled);
-			Assert.IsFalse(outOfRangeCalled);
-		}
-
-		[TestMethod]
-		public void OnCompleteは_直前のタスク完了時_エラーも正常終了も_どちらも呼ばれる()
-		{
-			var errorTaskCalled = false;
-			var normalTaskCalled = false;
-
-			var normalTask = Task.Run(() => Coroutines.NFrame(5))
-				.OnComplete(t => normalTaskCalled = true);
-			var errorTask = Task.Run<int>(Coroutines.FErrorAsync)
-				.OnComplete(t => errorTaskCalled = true);
-
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(20);
-
-			Assert.IsTrue(normalTaskCalled);
-			Assert.IsTrue(errorTaskCalled);
-		}
-
-		[TestMethod]
-		public void タスク中で例外が出たときにResultをとろうとすると例外再スロー()
-		{
-			var task = Task.Run<int>(Coroutines.FErrorAsync)
-				.ContinueWith(t =>
-				{
-					Assert.IsTrue(t.IsFaulted);
-
-					try
-					{
-						var result = t.Result;
-					}
-					catch
-					{
-						return;
-					}
-					Assert.Fail();
-				});
-
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(20);
-
-			// catch して無視したので、task の Error は null のはず。
-			Assert.IsNull(task.Error);
-		}
-
-		[TestMethod]
-		public void ContinueWithで継続処理を実行できる()
-		{
-			var x = 10.0;
-			var x1 = Coroutines.F1(x);
-			var x2 = Coroutines.F2(x1);
-			var x3 = Coroutines.F3(x2);
-
-			var task = Task.Run<double>(c => Coroutines.F1Async(x, c))
-				.OnComplete(t => Assert.AreEqual(t.Result, x1))
-				.ContinueWithIterator<string>((t, callback) => Coroutines.F2Async(t.Result, callback))
-				.OnComplete(t => Assert.AreEqual(t.Result, x2))
-				.ContinueWithIterator<int>((t, callback) => Coroutines.F3Async(t.Result, callback))
-				.OnComplete(t => Assert.AreEqual(t.Result, x2))
-				;
-
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(30);
-		}
-
-		[TestMethod]
-		public void WhenAllでタスクの並行動作できる()
-		{
-			var t1 = Task.Run(() => Coroutines.NFrame(3));
-			var t2 = Task.Run(() => Coroutines.NFrame(5));
-			var t3 = Task.Run(() => Coroutines.NFrame(7));
-
-			var task = Task.WhenAll(t1, t2, t3)
-				.OnComplete(t =>
-				{
-					Assert.IsTrue(t1.IsCompleted);
-					Assert.IsTrue(t2.IsCompleted);
-					Assert.IsTrue(t3.IsCompleted);
-				});
-
-			var scheduler = Task.DefaultScheduler;
-			scheduler.Update(20);
-
-			Assert.IsTrue(task.IsCompleted);
-			Assert.IsNull(task.Error);
-		}
-	}
-
-	static class TaskTestExtensions
-	{
-		public static Task OnComplete(this Task t, Action<Task> a)
-		{
-			t.ContinueWith(a);
-			return t;
-		}
-		public static Task<T> OnComplete<T>(this Task<T> t, Action<Task<T>> a)
-		{
-			t.ContinueWith(a);
-			return t;
-		}
-	}
+        [TestMethod]
+        public void タスク中で例外が出たらOnErrorが呼ばれる_特定の型の例外だけ拾う()
+        {
+            var notSupportedCalled = false;
+            var outOfRangeCalled = false;
+
+            var task = Task.Run(Coroutines.FErrorAsync)
+                .OnError<NotSupportedException>(e => notSupportedCalled = true) // 呼ばれる
+                .OnError<IndexOutOfRangeException>(e => outOfRangeCalled = true); // 呼ばれない
+
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(20);
+
+            Assert.IsTrue(notSupportedCalled);
+            Assert.IsFalse(outOfRangeCalled);
+        }
+
+        [TestMethod]
+        public void OnCompleteは_直前のタスク完了時_エラーも正常終了も_どちらも呼ばれる()
+        {
+            var errorTaskCalled = false;
+            var normalTaskCalled = false;
+
+            var normalTask = Task.Run(() => Coroutines.NFrame(5))
+                .OnComplete(t => normalTaskCalled = true);
+            var errorTask = Task.Run<int>(Coroutines.FErrorAsync)
+                .OnComplete(t => errorTaskCalled = true);
+
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(20);
+
+            Assert.IsTrue(normalTaskCalled);
+            Assert.IsTrue(errorTaskCalled);
+        }
+
+        [TestMethod]
+        public void タスク中で例外が出たときにResultをとろうとすると例外再スロー()
+        {
+            var task = Task.Run<int>(Coroutines.FErrorAsync)
+                .ContinueWith(t =>
+                {
+                    Assert.IsTrue(t.IsFaulted);
+
+                    try
+                    {
+                        var result = t.Result;
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                    Assert.Fail();
+                });
+
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(20);
+
+            // catch して無視したので、task の Error は null のはず。
+            Assert.IsNull(task.Error);
+        }
+
+        [TestMethod]
+        public void ContinueWithで継続処理を実行できる()
+        {
+            var x = 10.0;
+            var x1 = Coroutines.F1(x);
+            var x2 = Coroutines.F2(x1);
+            var x3 = Coroutines.F3(x2);
+
+            var task = Task.Run<double>(c => Coroutines.F1Async(x, c))
+                .OnComplete(t => Assert.AreEqual(t.Result, x1))
+                .ContinueWithIterator<string>((t, callback) => Coroutines.F2Async(t.Result, callback))
+                .OnComplete(t => Assert.AreEqual(t.Result, x2))
+                .ContinueWithIterator<int>((t, callback) => Coroutines.F3Async(t.Result, callback))
+                .OnComplete(t => Assert.AreEqual(t.Result, x2))
+                ;
+
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(30);
+        }
+
+        [TestMethod]
+        public void WhenAllでタスクの並行動作できる()
+        {
+            var t1 = Task.Run(() => Coroutines.NFrame(3));
+            var t2 = Task.Run(() => Coroutines.NFrame(5));
+            var t3 = Task.Run(() => Coroutines.NFrame(7));
+
+            var task = Task.WhenAll(t1, t2, t3)
+                .OnComplete(t =>
+                {
+                    Assert.IsTrue(t1.IsCompleted);
+                    Assert.IsTrue(t2.IsCompleted);
+                    Assert.IsTrue(t3.IsCompleted);
+                });
+
+            var scheduler = Task.DefaultScheduler;
+            scheduler.Update(20);
+
+            Assert.IsTrue(task.IsCompleted);
+            Assert.IsNull(task.Error);
+        }
+    }
+
+    static class TaskTestExtensions
+    {
+        public static Task OnComplete(this Task t, Action<Task> a)
+        {
+            t.ContinueWith(a);
+            return t;
+        }
+        public static Task<T> OnComplete<T>(this Task<T> t, Action<Task<T>> a)
+        {
+            t.ContinueWith(a);
+            return t;
+        }
+    }
 }

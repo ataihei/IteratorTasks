@@ -5,11 +5,11 @@ using System.Text;
 
 namespace IteratorTasks
 {
-	public enum TaskSchedulerStatus
-	{
-		Running,
-		Shutdown,
-		ShutdownCompleted,
-		ShutdownTimeout,
-	}
+    public enum TaskSchedulerStatus
+    {
+        Running,
+        Shutdown,
+        ShutdownCompleted,
+        ShutdownTimeout,
+    }
 }
