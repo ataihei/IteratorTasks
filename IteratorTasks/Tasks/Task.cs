@@ -370,13 +370,13 @@ namespace IteratorTasks
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static Task<T> Return<T>(T value) { return new Task<T>(value); }
+        public static Task<T> FromResult<T>(T value) { return new Task<T>(value); }
 
         /// <summary>
         /// 完了しているタスク
         /// </summary>
         /// <returns></returns>
-        public static Task Return() { return new Task<object>(default(object)); }
+        public static Task FromResult() { return new Task<object>(default(object)); }
 
         /// <summary>
         /// キャンセルを待つだけのタスク
@@ -423,7 +423,7 @@ namespace IteratorTasks
         public static Task WhenAll(params Task[] tasks)
         {
             int count = tasks.Length;
-            if (count == 0) return Task.Return<object>(null);
+            if (count == 0) return Task.FromResult<object>(null);
 
             var tcs = new TaskCompletionSource<object>();
             AggregateException ex = new AggregateException();
