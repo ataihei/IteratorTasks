@@ -49,7 +49,6 @@ namespace IteratorTasks
             {
                 if (!Routine.MoveNext())
                     Complete();
-                Status = TaskStatus.Running;
             }
             catch (Exception e)
             {
