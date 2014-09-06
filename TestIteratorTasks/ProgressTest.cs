@@ -24,6 +24,10 @@ namespace TestIteratorTasks
 
             var scheduler = Task.DefaultScheduler;
 
+            // RunOnce 仕様のために、最初の1回だけ特殊(Update より前に Report 呼ばれる)
+            // テスト仕様的には変だし何とかしたいけども
+            scheduler.Update();
+
             for (int i = 1; i < 100; i++)
             {
                 Assert.AreEqual(i, reportedItems.Count);

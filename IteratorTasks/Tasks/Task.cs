@@ -49,6 +49,8 @@ namespace IteratorTasks
             {
                 if (!Routine.MoveNext())
                     Complete();
+                Status = TaskStatus.Running;
+                _firstRunning = true;
             }
             catch (Exception e)
             {
@@ -91,12 +93,24 @@ namespace IteratorTasks
         /// </summary>
         public TaskStatus Status { get; protected internal set; }
 
+        // こういうフラグわざわざ持ちたくないけども、
+        // Start 直後から TaskStatus.Running にして、かつ、Start 時点で RunOnce にしようと思うと必要。
+        // 今のところ他にいい方法思いつかない。
+        private bool _firstRunning;
+
+        // 本家 Task にない仕様なんだけど、ただのキャンセルよりも強い、OnCompleted が呼ばれない強制キャンセル機能を実装するためのフラグ。
+        private bool _forceCanceled;
+
         public bool IsCompleted { get { return Status == TaskStatus.RanToCompletion || IsCanceled || IsFaulted; } }
         public bool IsCanceled { get { return Status == TaskStatus.Canceled; } }
         public bool IsFaulted { get { return Status == TaskStatus.Faulted; } }
 
+        bool IAwaiter.IsCompleted { get { return IsCompleted && !_forceCanceled; } }
+
         void IAwaiter.OnCompleted(Action continuation)
         {
+            if (_forceCanceled) return;
+
             if (IsCompleted)
                 Scheduler.Post(continuation);
             else
@@ -121,9 +135,10 @@ namespace IteratorTasks
 
         bool IEnumerator.MoveNext()
         {
-            if (Status == TaskStatus.Created)
+            if (Status == TaskStatus.Created || _firstRunning)
             {
                 Status = TaskStatus.Running;
+                _firstRunning = false;
 
                 // 最初の一回、Start 時に RunOnce して、そこで MoveNext が false ならもう RanToEnd になってるはずなので。
                 return true;
@@ -242,6 +257,7 @@ namespace IteratorTasks
         public void ForceCancel(Exception e)
         {
             Status = TaskStatus.Canceled;
+            _forceCanceled = true;
             AddError(e);
             Error.IsHandled = true;
             ((IDisposable)this).Dispose();

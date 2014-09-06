@@ -21,7 +21,7 @@ namespace TestIteratorTasks
             {
                 scheduler.Update();
 
-                if (i < N - 1)
+                if (i < N)
                     Assert.IsFalse(task.IsCompleted, "expected false, but actual true on i = " + i);
                 else
                     Assert.IsTrue(task.IsCompleted, "expected true, but actual false on i = " + i);
