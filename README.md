@@ -69,7 +69,7 @@ public static IEnumerator F3Async(string s, Action<int> completed)
 
 Comments in souce codes on this project is written in Japanese.
 
-# [License](https://github.com/aiming/iterator-tasks/blob/master/LICENSE.md)
+# [License](https://github.com/OrangeCube/IteratorTasks/blob/master/LICENSE.md)
 
 # Contributing
 1. Fork it
