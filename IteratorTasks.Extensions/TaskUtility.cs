@@ -11,7 +11,7 @@ namespace IteratorTasks
     /// 特に、タイマー関連は、マルチスレッドになってしまうので Unity とは相性よくないかも。
     /// Unity は yield return new WaitForSeconds(t); とか使ってほしそうだし。
     /// </remarks>
-    public static class TaskUtility
+    public static partial class TaskUtility
     {
         /// <summary>
         /// 二重起動防止付きのタスク生成関数を返す。

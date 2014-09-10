@@ -43,6 +43,7 @@
     <Compile Include="TaskEx.cs" />
     <Compile Include="TaskExtensions.cs" />
     <Compile Include="TaskUtility.cs" />
+    <Compile Include="TaskUtility_Success.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IteratorTasks\IteratorTasks.csproj">
