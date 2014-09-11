@@ -324,28 +324,6 @@ namespace TestIteratorTasks
             var scheduler = Task.DefaultScheduler;
             scheduler.Update(30);
         }
-
-        [TestMethod]
-        public void WhenAllでタスクの並行動作できる()
-        {
-            var t1 = Task.Run(() => Coroutines.NFrame(3));
-            var t2 = Task.Run(() => Coroutines.NFrame(5));
-            var t3 = Task.Run(() => Coroutines.NFrame(7));
-
-            var task = Task.WhenAll(t1, t2, t3)
-                .OnComplete(t =>
-                {
-                    Assert.IsTrue(t1.IsCompleted);
-                    Assert.IsTrue(t2.IsCompleted);
-                    Assert.IsTrue(t3.IsCompleted);
-                });
-
-            var scheduler = Task.DefaultScheduler;
-            scheduler.Update(20);
-
-            Assert.IsTrue(task.IsCompleted);
-            Assert.IsNull(task.Error);
-        }
     }
 
     static class TaskTestExtensions
