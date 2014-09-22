@@ -98,19 +98,14 @@ namespace IteratorTasks
         // 今のところ他にいい方法思いつかない。
         private bool _firstRunning;
 
-        // 本家 Task にない仕様なんだけど、ただのキャンセルよりも強い、OnCompleted が呼ばれない強制キャンセル機能を実装するためのフラグ。
-        private bool _forceCanceled;
-
         public bool IsCompleted { get { return Status == TaskStatus.RanToCompletion || IsCanceled || IsFaulted; } }
         public bool IsCanceled { get { return Status == TaskStatus.Canceled; } }
         public bool IsFaulted { get { return Status == TaskStatus.Faulted; } }
 
-        bool IAwaiter.IsCompleted { get { return IsCompleted && !_forceCanceled; } }
+        bool IAwaiter.IsCompleted { get { return IsCompleted; } }
 
         void IAwaiter.OnCompleted(Action continuation)
         {
-            if (_forceCanceled) return;
-
             if (IsCompleted)
                 Scheduler.Post(continuation);
             else
@@ -215,14 +210,33 @@ namespace IteratorTasks
         /// <summary>
         /// タスクをキャンセルします。
         /// CancellationToken 越しにキャンセルするので、コルーチン側が対応していない場合には即座にはタスク終了しない。
+        /// Task を作るときに CancellationToken を渡していないものに対して呼び出すと例外発生。
         /// </summary>
+        /// <remarks>
+        /// 注: 本家 Task にはないもの。
+        /// </remarks>
         public void Cancel()
         {
             if (Cancellation == null)
                 throw new InvalidOperationException("Can't cancel Task.");
 
             Cancellation.Cancel();
+            ((IEnumerator)this).MoveNext();
+        }
 
+        /// <summary>
+        /// タスクをキャンセルします。
+        /// Task を作るときに CancellationToken を渡していないものに対して呼び出すと何もしない。
+        /// </summary>
+        /// <remarks>
+        /// 注: 本家 Task にはないもの。
+        /// </remarks>
+        public void TryCancel()
+        {
+            if (Cancellation == null)
+                return;
+
+            Cancellation.Cancel();
             ((IEnumerator)this).MoveNext();
         }
 
@@ -239,28 +253,6 @@ namespace IteratorTasks
             Cancellation.Cancel(e);
 
             ((IEnumerator)this).MoveNext();
-        }
-
-        /// <summary>
-        /// タスクの強制終了。
-        /// CancellationToken を介さないので、タスクの中身のルーチン側はキャンセルされたことを知るすべがなく、途中で止まる。
-        /// </summary>
-        public void ForceCancel()
-        {
-            ForceCancel(new TaskCanceledException("Task force canceled."));
-        }
-
-        /// <summary>
-        /// タスクを強制キャンセルします。OnCompleteは呼ばれません。
-        /// 例外も処理済み扱い（IsHandled が true に）。
-        /// </summary>
-        public void ForceCancel(Exception e)
-        {
-            Status = TaskStatus.Canceled;
-            _forceCanceled = true;
-            AddError(e);
-            Error.IsHandled = true;
-            ((IDisposable)this).Dispose();
         }
 
         /// <summary>

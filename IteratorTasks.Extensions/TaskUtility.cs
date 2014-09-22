@@ -120,16 +120,6 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// 一定時間後にキャンセル。
-        /// </summary>
-        /// <param name="t"></param>
-        /// <param name="timeout"></param>
-        public static void ForceCancelAfter(this Task t, TimeSpan timeout)
-        {
-            DelayTimer(timeout, () => t.ForceCancel(new TimeoutException()));
-        }
-
-        /// <summary>
         /// 一定時間後にキャンセルされる CancellationTokenSource を作る。
         /// </summary>
         /// <param name="timeout"></param>

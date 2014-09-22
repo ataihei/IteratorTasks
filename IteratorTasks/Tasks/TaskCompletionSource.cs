@@ -16,11 +16,6 @@ namespace IteratorTasks
             Task._scheduler = scheduler;
         }
 
-        public void SetForceCanceled()
-        {
-            ((ITaskInternal)_task).ForceCancel();
-        }
-
         public void TrySetCanceled()
         {
             if (_task.IsCompleted)
@@ -86,7 +81,6 @@ namespace IteratorTasks
         // 外から SetResult とかされたくないので、internal なインターフェイスを作って、明示的実装。
         internal interface ITaskInternal
         {
-            void ForceCancel();
             void Cancel();
             void SetException(Exception e);
             void SetResult(T result);
@@ -95,12 +89,6 @@ namespace IteratorTasks
 
     public partial class Task<T> : TaskCompletionSource<T>.ITaskInternal
     {
-        void TaskCompletionSource<T>.ITaskInternal.ForceCancel()
-        {
-            ForceCancel();
-            Complete();
-        }
-
         void TaskCompletionSource<T>.ITaskInternal.Cancel()
         {
             if (Status == TaskStatus.Running || Status == TaskStatus.Created)

@@ -188,14 +188,14 @@ namespace IteratorTasks
         /// RunningTasks と SuspendedTasks のすべてを強制キャンセルする。
         /// 強制キャンセルされたタスクはCompleteが呼ばれないので注意
         /// </summary>
-        public void ForceCancel()
+        public void Cancel()
         {
             var tasks = RunningTasks;
             if(SuspendedTasks != null)
                 tasks = tasks.Concat(SuspendedTasks);
 
             foreach (var t in tasks)
-                t.ForceCancel();
+                t.TryCancel();
         }
 
         /// <summary>
@@ -320,9 +320,9 @@ namespace IteratorTasks
                 {
                     _status = TaskSchedulerStatus.ShutdownTimeout;
 
-                    foreach (var t in _runningTasks) t.ForceCancel();
+                    foreach (var t in _runningTasks) t.TryCancel();
                     if (_suspendedTasks != null)
-                        foreach (var t in _suspendedTasks) t.ForceCancel();
+                        foreach (var t in _suspendedTasks) t.TryCancel();
 
                     var d = _shutdownCallback;
                     if (d != null) d(_status);
