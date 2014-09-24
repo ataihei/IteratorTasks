@@ -16,6 +16,10 @@ namespace System
         {
             return FirstAsync(e, _ => true, ct);
         }
+        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e)
+        {
+            return FirstAsync(e, CancellationToken.None);
+        }
 
         /// <summary>
         /// イベントを1回だけ受け取る。
@@ -42,11 +46,14 @@ namespace System
 
             e.Add(a);
 
-            ct.Register(() =>
+            if (ct != CancellationToken.None)
             {
-                e.Remove(a);
-                tcs.TrySetCanceled();
-            });
+                ct.Register(() =>
+                {
+                    e.Remove(a);
+                    tcs.TrySetCanceled();
+                });
+            }
 
             return tcs.Task;
         }
@@ -75,11 +82,14 @@ namespace System
 
             e.Add(a);
 
-            ct.Register(() =>
+            if (ct != CancellationToken.None)
             {
-                e.Remove(a);
-                tcs.TrySetCanceled();
-            });
+                ct.Register(() =>
+                {
+                    e.Remove(a);
+                    tcs.TrySetCanceled();
+                });
+            }
 
             return tcs.Task;
         }
