@@ -63,29 +63,6 @@ namespace TestIteratorTasks
         }
 
         [TestMethod]
-        public void TaskのForceCancelで強制的にタスクを止めたときはOnCompleteも呼ばれない()
-        {
-            var x = 10;
-            var scheduler = Task.DefaultScheduler;
-
-            var cts = new CancellationTokenSource();
-            var t = Task.Run<double>(c => Coroutines.F1Cancelable(x, 20, c, cts.Token));
-
-            t.ContinueWith(_ =>
-            {
-                Assert.Fail();
-            });
-
-            scheduler.Update(5);
-            t.ForceCancel();
-
-            scheduler.Update();
-
-            // この場合は IsCanceled に
-            Assert.IsTrue(t.IsCanceled);
-        }
-
-        [TestMethod]
         public void Cancel時にRegisterで登録したデリゲートが呼ばれる()
         {
             var scheduler = Task.DefaultScheduler;
