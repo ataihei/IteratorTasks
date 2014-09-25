@@ -120,25 +120,6 @@ namespace TestIteratorTasks
         }
 
         [TestMethod]
-        public void ForceCancel後はContinueWithが呼ばれない()
-        {
-            var x = 10;
-            var y = Coroutines.F1(x);
-
-            bool called = false;
-
-            var task = Task.Run<double>(c => Coroutines.F1Async(x, c));
-            task.ForceCancel();
-
-            task.ContinueWith(t => called = true);
-
-            var scheduler = Task.DefaultScheduler;
-            scheduler.Update(10);
-
-            Assert.IsFalse(called);
-        }
-
-        [TestMethod]
         public void 完了済みのタスクでContinueWithすると_次のUpdateでコールバックが呼ばれる()
         {
             var x = 10;
