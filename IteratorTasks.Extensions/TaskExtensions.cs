@@ -86,6 +86,15 @@ namespace IteratorTasks
         }
 
         /// <summary>
+        /// ハンドルしてないエラーがあったらエラーをリスローする。
+        /// 主にタスクのコルーチン内で子タスクを走らせるときのエラー処理用。
+        /// </summary>
+        public static void ThrowIfErrorUnhandled(this Task t)
+        {
+            if (t.Error != null && !t.Error.IsHandled) throw t.Error;
+        }
+
+        /// <summary>
         /// 前段のタスクでエラー出てたらそれを伝搬するだけで、実際にはContinueWithしないバージョン。
         /// </summary>
         /// <param name="t"></param>
