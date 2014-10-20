@@ -373,16 +373,37 @@ namespace IteratorTasks
         /// ただの値をタスク化。
         /// 作ったタスクは、最初から完了済みで、Result で値を取れる。
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static Task<T> FromResult<T>(T value) { return new Task<T>(value); }
 
         /// <summary>
         /// 完了しているタスク
         /// </summary>
+        /// <remarks>
+        /// その時点でのDefaultSchedularを拾う。
+        /// </remarks>
         /// <returns></returns>
+        [Obsolete]
         public static Task FromResult() { return new Task<object>(default(object)); }
+
+        
+
+        /// <summary>
+        /// 完了済みのタスクを取得する。
+        /// インスタンスを1つだけ作る。DefaultSchedulerの差し替えとかをやると動作保証できない。
+        /// </summary>
+        public static Task CompletedTask
+        {
+            get
+            {
+                if ( _completedTask == null )
+                {
+                    _completedTask = Task.FromResult<object>(default(object));
+                }
+                return _completedTask;
+            }
+        }
+
+        private static Task _completedTask;
 
         /// <summary>
         /// キャンセルを待つだけのタスク
@@ -401,7 +422,7 @@ namespace IteratorTasks
         /// <typeparam name="T"></typeparam>
         /// <param name="error"></param>
         /// <returns></returns>
-        public static Task<T> Exception<T>(Exception error)
+        public static Task<T> FromException<T>(Exception error)
         {
             var tcs = new TaskCompletionSource<T>();
             tcs.SetException(error);
@@ -413,9 +434,9 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="error"></param>
         /// <returns></returns>
-        public static Task Exception(Exception error)
+        public static Task FromException(Exception error)
         {
-            return Exception<object>(error);
+            return FromException<object>(error);
         }
 
         /// <summary>
