@@ -4,11 +4,13 @@ namespace IteratorTasks
 {
     public partial class Task
     {
+        public static Task Delay(int delayMilliseconds) { return Delay(delayMilliseconds, CancellationToken.None, null); }
         public static Task Delay(int delayMilliseconds, TaskScheduler scheduler)
         {
             return Delay(delayMilliseconds, CancellationToken.None, scheduler);
         }
 
+        public static Task Delay(int delayMilliseconds, CancellationToken ct) { return Delay(delayMilliseconds, ct, null); }
         public static Task Delay(int delayMilliseconds, CancellationToken ct, TaskScheduler scheduler)
         {
             var tcs = new TaskCompletionSource<object>(scheduler);
