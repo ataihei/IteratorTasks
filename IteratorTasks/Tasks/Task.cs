@@ -376,44 +376,18 @@ namespace IteratorTasks
         public static Task<T> FromResult<T>(T value) { return new Task<T>(value); }
 
         /// <summary>
-        /// 完了しているタスク
+        /// 完了済みのタスクを取得する。
         /// </summary>
         /// <remarks>
         /// その時点でのDefaultSchedularを拾う。
+        /// (毎回新しいタスクインスタンスを作成する)
         /// </remarks>
-        /// <returns></returns>
-        [Obsolete]
-        public static Task FromResult() { return new Task<object>(default(object)); }
-
-        
-
-        /// <summary>
-        /// 完了済みのタスクを取得する。
-        /// インスタンスを1つだけ作る。DefaultSchedulerの差し替えとかをやると動作保証できない。
-        /// </summary>
         public static Task CompletedTask
         {
             get
             {
-                if ( _completedTask == null )
-                {
-                    _completedTask = Task.FromResult<object>(default(object));
-                }
-                return _completedTask;
+                return Task.FromResult<object>(default(object)); ;
             }
-        }
-
-        private static Task _completedTask;
-
-        /// <summary>
-        /// キャンセルを待つだけのタスク
-        /// </summary>
-        public static Task<T> WaitCancel<T>(CancellationToken ct)
-        {
-            var tcs = new TaskCompletionSource<T>();
-            if (ct != CancellationToken.None)
-                ct.Register(() => tcs.SetCanceled());
-            return tcs.Task;
         }
 
         /// <summary>
