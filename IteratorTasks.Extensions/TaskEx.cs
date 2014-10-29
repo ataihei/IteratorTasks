@@ -29,6 +29,12 @@ namespace IteratorTasks
             return First(null, cts, tasks);
         }
 
+        public static Task<T> First<T>(CancellationToken ct, params Task<T>[] tasks)
+        {
+            var cts = ct.ToCancellationTokenSourceOneWay();
+            return First(cts, tasks);
+        }
+
         public static Task<T> First<T>(TaskScheduler scheduler, CancellationTokenSource cts, params Task<T>[] tasks)
         {
             if (tasks.Length == 0)
@@ -87,6 +93,12 @@ namespace IteratorTasks
         public static Task First(CancellationTokenSource cts, params Task[] tasks)
         {
             return First(null, cts, tasks);
+        }
+
+        public static Task First(CancellationToken ct, params Task[] tasks)
+        {
+            var cts = ct.ToCancellationTokenSourceOneWay();
+            return First(cts, tasks);
         }
 
         /// <summary>
