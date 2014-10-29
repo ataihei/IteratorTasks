@@ -7,13 +7,13 @@ namespace IteratorTasks
 {
     public static class TaskEx
     {
-        public static Task<T> First<T>(Task<T>[] tasks) { return First(tasks, null); }
+        public static Task<T> First<T>(params Task<T>[] tasks) { return First(null, tasks); }
 
         public static Task<T> First<T>(params AsyncFunc<T>[] tasks)
         {
             var cts = new CancellationTokenSource();
             var created = tasks.Select(x => x(cts.Token)).ToArray();
-            return First(created, cts);
+            return First(cts, created);
         }
 
         /// <summary>
@@ -21,15 +21,15 @@ namespace IteratorTasks
         /// 残りのタスクは内部でキャンセルする。
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="tasks">最初の1つを待ちたいタスク一覧。</param>
         /// <param name="cts"></param>
+        /// <param name="tasks">最初の1つを待ちたいタスク一覧。</param>
         /// <returns>最初の1つだけ終わったら完了になるタスク。</returns>
-        public static Task<T> First<T>(Task<T>[] tasks, CancellationTokenSource cts)
+        public static Task<T> First<T>(CancellationTokenSource cts, params Task<T>[] tasks)
         {
-            return First(tasks, null, cts);
+            return First(null, cts, tasks);
         }
 
-        public static Task<T> First<T>(Task<T>[] tasks, TaskScheduler scheduler, CancellationTokenSource cts)
+        public static Task<T> First<T>(TaskScheduler scheduler, CancellationTokenSource cts, params Task<T>[] tasks)
         {
             if (tasks.Length == 0)
                 throw new ArgumentException("tasks must contain at least one task", "tasks");
@@ -68,25 +68,25 @@ namespace IteratorTasks
             return task0;
         }
 
-        public static Task First(Task[] tasks) { return First(tasks, null); }
+        public static Task First(params Task[] tasks) { return First(null, tasks); }
 
         public static Task First(params AsyncAction[] tasks)
         {
             var cts = new CancellationTokenSource();
             var created = tasks.Select(x => x(cts.Token)).ToArray();
-            return First(created, cts);
+            return First(cts, created);
         }
 
         public static Task First(TaskScheduler scheduler, params AsyncAction[] tasks)
         {
             var cts = new CancellationTokenSource();
             var created = tasks.Select(x => x(cts.Token)).ToArray();
-            return First(created, scheduler, cts);
+            return First(scheduler, cts, created);
         }
 
-        public static Task First(Task[] tasks, CancellationTokenSource cts)
+        public static Task First(CancellationTokenSource cts, params Task[] tasks)
         {
-            return First(tasks, null, cts);
+            return First(null, cts, tasks);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace IteratorTasks
         /// <param name="cts"></param>
         /// <returns>最初の1つだけ終わったら完了になるタスク。</returns>
         // ※保留 <param name="onComplete">最初の1つのタスクが終了時に呼ばれる。Task.First().ContinueWith(onComplete) すると呼ばれるフレームが1フレーム遅れるけども、これならたぶん即呼ばれる。</param>
-        public static Task First(/* Action onComplete, */ Task[] tasks, TaskScheduler scheduler, CancellationTokenSource cts)
+        public static Task First(/* Action onComplete, */ TaskScheduler scheduler, CancellationTokenSource cts, params Task[] tasks)
         {
             if (tasks.Length == 0)
                 throw new ArgumentException("tasks must contain at least one task", "tasks");
