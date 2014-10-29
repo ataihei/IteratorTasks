@@ -68,32 +68,25 @@ namespace IteratorTasks
             return task0;
         }
 
-        public static Task First(Task[] tasks) { return First(null, tasks, null); }
+        public static Task First(Task[] tasks) { return First(tasks, null); }
 
-        public static Task First(Action onComplete, params AsyncAction[] tasks)
+        public static Task First(params AsyncAction[] tasks)
         {
             var cts = new CancellationTokenSource();
             var created = tasks.Select(x => x(cts.Token)).ToArray();
-            return First(onComplete, created, cts);
+            return First(created, cts);
         }
-
-        public static Task First(params AsyncAction[] tasks) { return First(default(TaskScheduler), tasks); }
 
         public static Task First(TaskScheduler scheduler, params AsyncAction[] tasks)
         {
             var cts = new CancellationTokenSource();
             var created = tasks.Select(x => x(cts.Token)).ToArray();
-            return First(null, created, scheduler, cts);
+            return First(created, scheduler, cts);
         }
 
         public static Task First(Task[] tasks, CancellationTokenSource cts)
         {
-            return First(null, tasks, cts);
-        }
-
-        public static Task First(Action onComplete, Task[] tasks, CancellationTokenSource cts)
-        {
-            return First(onComplete, tasks, null, cts);
+            return First(tasks, null, cts);
         }
 
         /// <summary>
@@ -101,11 +94,11 @@ namespace IteratorTasks
         /// 残りのタスクは内部でキャンセルする。
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="onComplete">最初の1つのタスクが終了時に呼ばれる。Task.First().ContinueWith(onComplete) すると呼ばれるフレームが1フレーム遅れるけども、これならたぶん即呼ばれる。</param>
         /// <param name="tasks">最初の1つを待ちたいタスク一覧。</param>
         /// <param name="cts"></param>
         /// <returns>最初の1つだけ終わったら完了になるタスク。</returns>
-        public static Task First(Action onComplete, Task[] tasks, TaskScheduler scheduler, CancellationTokenSource cts)
+        // ※保留 <param name="onComplete">最初の1つのタスクが終了時に呼ばれる。Task.First().ContinueWith(onComplete) すると呼ばれるフレームが1フレーム遅れるけども、これならたぶん即呼ばれる。</param>
+        public static Task First(/* Action onComplete, */ Task[] tasks, TaskScheduler scheduler, CancellationTokenSource cts)
         {
             if (tasks.Length == 0)
                 throw new ArgumentException("tasks must contain at least one task", "tasks");
@@ -117,8 +110,8 @@ namespace IteratorTasks
             if (cts != null)
                 cts.Token.Register(() =>
                 {
-                    if (onComplete != null)
-                        onComplete();
+                    //if (onComplete != null)
+                    //    onComplete();
 
                     if (tcs != null)
                     {
