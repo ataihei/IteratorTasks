@@ -120,6 +120,15 @@ namespace TestIteratorTasks
         }
 
         [TestMethod]
+        public void CompletedTaskでContinueWithするとUpdateCountを進めずに処理できる()
+        {
+            int updateCount = 0;
+            Task.CompletedTask.ContinueWith(t => updateCount = Task.DefaultScheduler.UpdateCount );
+
+            Assert.AreEqual(updateCount, 0);
+        }
+
+        [TestMethod]
         public void 完了済みのタスクでContinueWithすると_次のUpdateでコールバックが呼ばれる()
         {
             var x = 10;

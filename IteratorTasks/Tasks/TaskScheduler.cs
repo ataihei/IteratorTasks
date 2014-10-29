@@ -222,6 +222,7 @@ namespace IteratorTasks
             {
 #if DEBUG
                 _updating = false;
+                ++UpdateCount;
 #endif
             }
         }
@@ -248,6 +249,8 @@ namespace IteratorTasks
 #if DEBUG
         // スケジューラーを間違って複数のスレッドから呼んでたときの挙動が意味不明すぎてデバッグがつらいので、怪しい動きになってた時に例外出す。
         volatile bool _updating;
+
+        internal int UpdateCount { get; private set; }
 #endif
 
         /// <summary>
