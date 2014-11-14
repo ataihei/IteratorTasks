@@ -110,6 +110,13 @@ namespace IteratorTasks
             ct.Register(() => cts.Cancel());
             return cts.Token;
         }
+
+        public static TT.Task ToTask(this T.CancellationToken ct)
+        {
+            var tcs = new TT.TaskCompletionSource<bool>();
+            ct.Register(() => tcs.SetResult(false));
+            return tcs.Task;
+        }
     }
 
 }

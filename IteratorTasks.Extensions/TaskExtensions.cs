@@ -214,5 +214,12 @@ namespace IteratorTasks
                 ct.Register(() => cts.Cancel());
             return cts;
         }
+
+        public static Task ToTask(this CancellationToken ct)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            ct.Register(() => tcs.SetResult(false));
+            return tcs.Task;
+        }
     }
 }
