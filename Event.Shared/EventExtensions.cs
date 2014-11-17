@@ -93,5 +93,15 @@ namespace System
 
             return tcs.Task;
         }
+
+        public static void Add<T>(this IEvent<T> e, Action action)
+        {
+            e.Add((_1, _2) => action());
+        }
+
+        public static void Add<T>(this IEvent<T> e, Action<T> action)
+        {
+            e.Add((_1, arg) => action(arg));
+        }
     }
 }
