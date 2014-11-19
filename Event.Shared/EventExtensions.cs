@@ -9,6 +9,13 @@ namespace System
 {
     public static partial class EventExtensions
     {
+        public static CancellationToken ToCancellationToken<TArg>(this IEvent<TArg> e)
+        {
+            var cts = new CancellationTokenSource();
+            e.Add(cts.Cancel);
+            return cts.Token;
+        }
+
         /// <summary>
         /// イベントを1回だけ受け取る。
         /// </summary>
