@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace IteratorTasks
 {
@@ -203,7 +204,8 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// 一方通行にキャンセルを伝搬するCancellationTokenSourceを作ります
+        /// 引数がキャンセルされたら連動してキャンセルされる <see cref="CancellationTokenSource"/> を作ります。
+        /// 一方通行(戻り値の <see cref="CancellationTokenSource"/> がキャンセルされても、引数側はキャンセルされない)。
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
@@ -212,6 +214,21 @@ namespace IteratorTasks
             var cts = new CancellationTokenSource();
             if (ct != CancellationToken.None)
                 ct.Register(() => cts.Cancel());
+            return cts;
+        }
+
+        /// <summary>
+        /// 引数のどれか1個でもキャンセルされたら連動してキャンセルされる <see cref="CancellationTokenSource"/> を作ります。
+        /// 一方通行(戻り値の <see cref="CancellationTokenSource"/> がキャンセルされても、引数側はキャンセルされない)。
+        /// </summary>
+        /// <param name="ctList"></param>
+        /// <returns></returns>
+        public static CancellationTokenSource ToCancellationTokenSourceOneWay(this IEnumerable<CancellationToken> ctList)
+        {
+            var cts = new CancellationTokenSource();
+            foreach (var ct in ctList)
+                if (ct != CancellationToken.None)
+                    ct.Register(() => cts.Cancel());
             return cts;
         }
 
