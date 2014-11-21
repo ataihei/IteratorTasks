@@ -3,6 +3,7 @@ using IteratorTasks;
 #else
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reactive.Disposables;
 #endif
 
 namespace System
@@ -12,7 +13,7 @@ namespace System
         public static CancellationToken ToCancellationToken<TArg>(this IEvent<TArg> e)
         {
             var cts = new CancellationTokenSource();
-            e.Add(cts.Cancel);
+            e.Subscribe(cts.Cancel);
             return cts.Token;
         }
 
@@ -101,14 +102,20 @@ namespace System
             return tcs.Task;
         }
 
-        public static void Add<T>(this IEvent<T> e, Action action)
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Handler<T> handler)
         {
-            e.Add((_1, _2) => action());
+            e.Add(handler);
+            return Disposable.Create(() => e.Remove(handler));
         }
 
-        public static void Add<T>(this IEvent<T> e, Action<T> action)
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Action action)
         {
-            e.Add((_1, arg) => action(arg));
+            return Subscribe(e, (_1, _2) => action());
+        }
+
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> action)
+        {
+            return Subscribe(e, (_1, arg) => action(arg));
         }
     }
 }
