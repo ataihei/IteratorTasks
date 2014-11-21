@@ -69,6 +69,9 @@ namespace IteratorTasks
         /// </summary>
         public AggregateException Error { get; private set; }
 
+        //todo: Error 消す
+        public AggregateException Exception { get { return Error; } }
+
         protected void AddError(Exception exc)
         {
             var agg = exc as AggregateException;
