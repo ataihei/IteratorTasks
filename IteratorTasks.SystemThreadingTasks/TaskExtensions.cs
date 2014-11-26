@@ -28,7 +28,7 @@ namespace IteratorTasks
 
         private static void scheduler_UnhandledException(Task obj)
         {
-            var e = obj.Error;
+            var e = obj.Exception;
             var a = e as AggregateException;
 
             if (a == null || !a.Exceptions.Any(x => x is TaskCanceledException))
@@ -75,7 +75,7 @@ namespace IteratorTasks
                     if (x.IsCanceled)
                         tcs.SetCanceled();
                     else if (x.IsFaulted)
-                        tcs.SetException(x.Error);
+                        tcs.SetException(x.Exception);
                     else
                         tcs.SetResult(false);
                 });
@@ -90,7 +90,7 @@ namespace IteratorTasks
                     if (x.IsCanceled)
                         tcs.SetCanceled();
                     else if (x.IsFaulted)
-                        tcs.SetException(x.Error);
+                        tcs.SetException(x.Exception);
                     else
                         tcs.SetResult(t.Result);
                 });

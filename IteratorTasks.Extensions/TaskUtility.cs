@@ -61,7 +61,7 @@ namespace IteratorTasks
                     if (task.Status == TaskStatus.RanToCompletion) tcs.SetResult(task.Result);
                     else if (retryCount == 0)
                     {
-                        tcs.SetException(task.Error);
+                        tcs.SetException(task.Exception);
                     }
                     else
                     {

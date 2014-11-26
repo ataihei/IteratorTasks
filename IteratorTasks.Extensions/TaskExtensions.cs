@@ -52,8 +52,8 @@ namespace IteratorTasks
         {
             t.ContinueWith(x =>
             {
-                if (t.Error != null)
-                    foreach (var e in t.Error.Exceptions)
+                if (t.Exception != null)
+                    foreach (var e in t.Exception.Exceptions)
                     {
                         var et = e as TEx;
                         if (et != null)
@@ -75,8 +75,8 @@ namespace IteratorTasks
         {
             t.ContinueWith(x =>
             {
-                if (t.Error != null)
-                    foreach (var e in t.Error.Exceptions)
+                if (t.Exception != null)
+                    foreach (var e in t.Exception.Exceptions)
                     {
                         var et = e as TEx;
                         if (et != null)
@@ -87,12 +87,21 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// ハンドルしてないエラーがあったらエラーをリスローする。
+        /// エラーがあるときにエラーを再 throw する。
         /// 主にタスクのコルーチン内で子タスクを走らせるときのエラー処理用。
         /// </summary>
-        public static void ThrowIfErrorUnhandled(this Task t)
+        public static void ThrowIfException(this Task t)
         {
-            if (t.Error != null && !t.Error.IsHandled) throw t.Error;
+            if (t.Exception != null) throw t.Exception;
+        }
+
+        /// <summary>
+        /// 条件付きでエラーがあるときにエラーを再 throw する。
+        /// </summary>
+        /// <param name="check">再 throw 条件チェック。 trueを返すとエラーを throw する</param>
+        public static void ThrowIfException(this Task t, Func<Task, bool> check)
+        {
+            if (t.Exception != null && check(t)) throw t.Exception;
         }
 
         /// <summary>
@@ -107,7 +116,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWith(func);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException(x.Error);
+                if (x.Exception != null) return Task.FromException(x.Exception);
                 else return x.ContinueWith(func);
             });
         }
@@ -116,7 +125,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWith(func);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException<T>(x.Error);
+                if (x.Exception != null) return Task.FromException<T>(x.Exception);
                 else return x.ContinueWith(func);
             });
         }
@@ -125,7 +134,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithIterator(routine);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException(x.Error);
+                if (x.Exception != null) return Task.FromException(x.Exception);
                 else return x.ContinueWithIterator(routine);
             });
         }
@@ -134,7 +143,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithTask(starter);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException(x.Error);
+                if (x.Exception != null) return Task.FromException(x.Exception);
                 else return x.ContinueWithTask(starter);
             });
         }
@@ -143,7 +152,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithTask(starter);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException<T>(x.Error);
+                if (x.Exception != null) return Task.FromException<T>(x.Exception);
                 else return x.ContinueWithTask(starter);
             });
         }
@@ -153,7 +162,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWith(func);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException(x.Error);
+                if (x.Exception != null) return Task.FromException(x.Exception);
                 else return x.ContinueWith(func);
             });
         }
@@ -162,7 +171,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWith(func);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException<U>(x.Error);
+                if (x.Exception != null) return Task.FromException<U>(x.Exception);
                 else return x.ContinueWith(func);
             });
         }
@@ -171,7 +180,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithIterator(routine);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException(x.Error);
+                if (x.Exception != null) return Task.FromException(x.Exception);
                 else return x.ContinueWithIterator(routine);
             });
         }
@@ -180,7 +189,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithIterator(routine);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException<U>(x.Error);
+                if (x.Exception != null) return Task.FromException<U>(x.Exception);
                 else return x.ContinueWithIterator(routine);
             });
         }
@@ -189,7 +198,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithTask(starter);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException(x.Error);
+                if (x.Exception != null) return Task.FromException(x.Exception);
                 else return x.ContinueWithTask(starter);
             });
         }
@@ -198,7 +207,7 @@ namespace IteratorTasks
             if (!rethrowOnError) return t.ContinueWithTask(starter);
             return t.ContinueWithTask(x =>
             {
-                if (x.Error != null) return Task.FromException<U>(x.Error);
+                if (x.Exception != null) return Task.FromException<U>(x.Exception);
                 else return x.ContinueWithTask(starter);
             });
         }

@@ -67,27 +67,24 @@ namespace IteratorTasks
         /// <summary>
         /// タスク実行中に発生した例外。
         /// </summary>
-        public AggregateException Error { get; private set; }
-
-        //todo: Error 消す
-        public AggregateException Exception { get { return Error; } }
+        public AggregateException Exception { get; private set; }
 
         protected void AddError(Exception exc)
         {
             var agg = exc as AggregateException;
             if (agg != null)
             {
-                if (Error == null)
-                    Error = agg;
+                if (Exception == null)
+                    Exception = agg;
                 else
-                    Error.Merge(agg);
+                    Exception.Merge(agg);
             }
             else
             {
-                if (Error == null)
-                    Error = new AggregateException(exc);
+                if (Exception == null)
+                    Exception = new AggregateException(exc);
                 else
-                    Error.Merge(exc);
+                    Exception.Merge(exc);
             }
         }
 
@@ -181,7 +178,7 @@ namespace IteratorTasks
             if (Status == TaskStatus.Canceled)
                 return;
 
-            if (Error != null)
+            if (Exception != null)
                 Status = TaskStatus.Faulted;
             else
                 Status = TaskStatus.RanToCompletion;
@@ -447,10 +444,10 @@ namespace IteratorTasks
                 {
                     if (tLocal.IsFaulted)
                     {
-                        if (!tLocal.Error.IsHandled)
+                        if (!tLocal.Exception.IsHandled)
                             isAllErrorHandled = false;
-                        tLocal.Error.IsHandled = true;
-                        lock (ex) ex.Merge(tLocal.Error);
+                        tLocal.Exception.IsHandled = true;
+                        lock (ex) ex.Merge(tLocal.Exception);
                     }
 
                     System.Threading.Interlocked.Decrement(ref count);
@@ -585,6 +582,6 @@ namespace IteratorTasks
         }
 
         [Obsolete]
-        public bool IsHandled { get { return Error == null || Error.IsHandled; } set { if (Error != null) Error.IsHandled = value; } }
+        public bool IsHandled { get { return Exception == null || Exception.IsHandled; } set { if (Exception != null) Exception.IsHandled = value; } }
     }
 }
