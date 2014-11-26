@@ -161,7 +161,7 @@ namespace IteratorTasks
             }
             else if (task.IsFaulted)
             {
-                tcs.SetException(task.Error);
+                tcs.SetException(task.Exception);
             }
             else
             {

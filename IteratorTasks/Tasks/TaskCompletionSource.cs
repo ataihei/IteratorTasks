@@ -70,7 +70,7 @@ namespace IteratorTasks
             }
             else if (task.IsFaulted)
             {
-                SetException(task.Error);
+                SetException(task.Exception);
             }
             else
             {

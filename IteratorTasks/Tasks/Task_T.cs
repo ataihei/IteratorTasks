@@ -17,7 +17,7 @@ namespace IteratorTasks
         {
             get
             {
-                if (Error != null) throw Error;
+                if (Exception != null) throw Exception;
                 return _result;
             }
         }

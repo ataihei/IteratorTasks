@@ -453,9 +453,9 @@ namespace IteratorTasks
 
         private void CheckError(Task t)
         {
-            if (t.Error != null && !t.Error.IsHandled)//!t.IsHandled)
+            if (t.Exception != null && !t.Exception.IsHandled)//!t.IsHandled)
             {
-                t.Error.IsHandled = true;
+                t.Exception.IsHandled = true;
                 var d = _unhandledException;
                 if (d != null) d(t);
             }
