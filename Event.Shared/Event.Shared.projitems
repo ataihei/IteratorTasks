@@ -9,9 +9,12 @@
     <Import_RootNamespace>System</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AsyncHandlerList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HandlerList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IAsyncEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Null.cs" />
   </ItemGroup>

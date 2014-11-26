@@ -107,15 +107,59 @@ namespace System
             e.Add(handler);
             return Disposable.Create(() => e.Remove(handler));
         }
-
-        public static IDisposable Subscribe<T>(this IEvent<T> e, Action action)
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> handler)
         {
-            return Subscribe(e, (_1, _2) => action());
+            return Subscribe(e, (_1, arg) => handler(arg));
+        }
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Action handler)
+        {
+            return Subscribe(e, (_1, _2) => handler());
         }
 
-        public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> action)
+        public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Handler<T> handler)
         {
-            return Subscribe(e, (_1, arg) => action(arg));
+            var d = e.Subscribe(handler);
+            ct.Register(d.Dispose);
+        }
+        public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Action<T> handler)
+        {
+            var d = e.Subscribe(handler);
+            ct.Register(d.Dispose);
+        }
+        public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Action handler)
+        {
+            var d = e.Subscribe(handler);
+            ct.Register(d.Dispose);
+        }
+
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, AsyncHandler<T> handler)
+        {
+            e.Add(handler);
+            return Disposable.Create(() => e.Remove(handler));
+        }
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<T, Task> handler)
+        {
+            return Subscribe(e, (_1, arg) => handler(arg));
+        }
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<Task> handler)
+        {
+            return Subscribe(e, (_1, _2) => handler());
+        }
+
+        public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, AsyncHandler<T> handler)
+        {
+            var d = e.Subscribe(handler);
+            ct.Register(d.Dispose);
+        }
+        public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, Func<T, Task> handler)
+        {
+            var d = e.Subscribe(handler);
+            ct.Register(d.Dispose);
+        }
+        public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, Func<Task> handler)
+        {
+            var d = e.Subscribe(handler);
+            ct.Register(d.Dispose);
         }
     }
 }

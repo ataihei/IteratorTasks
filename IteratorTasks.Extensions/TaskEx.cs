@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace IteratorTasks
 {
-    public static class TaskEx
+    public static partial class TaskEx
     {
         public static Task<T> First<T>(params Task<T>[] tasks) { return First(null, tasks); }
 
