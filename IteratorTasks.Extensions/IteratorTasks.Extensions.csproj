@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncAction.cs" />
+    <Compile Include="IAsyncDisposable.cs" />
     <Compile Include="TaskEx.TaskStarter.cs" />
     <Compile Include="TaskStarter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
