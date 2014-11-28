@@ -48,7 +48,10 @@ namespace IteratorTasks
             try
             {
                 if (!Routine.MoveNext())
+                {
                     Complete();
+                    return;
+                }
                 Status = TaskStatus.Running;
                 _firstRunning = true;
             }
