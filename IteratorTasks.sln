@@ -17,6 +17,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Event.Shared", "Event.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Event.SystemThreadingTasks", "Event.SystemThreadingTasks\Event.SystemThreadingTasks.csproj", "{BEAE8A64-DD04-44B5-8EED-3E54061E4ABC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{018B2949-29F9-4DBB-9A8E-592E76076E21}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Event.Shared\Event.Shared.projitems*{2e6a4b9d-f0f1-4c40-8cb5-fc6373a87cd6}*SharedItemsImports = 13

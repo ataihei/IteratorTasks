@@ -39,7 +39,7 @@ namespace TestIteratorTasks
 
             // この場合は IsCanceled にならない
             Assert.IsTrue(t.IsFaulted);
-            Assert.AreEqual(typeof(TaskCanceledException), t.Error.Exceptions.Single().GetType());
+            Assert.AreEqual(typeof(TaskCanceledException), t.Exception.Exceptions.Single().GetType());
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace TestIteratorTasks
 
             // この場合は IsCanceled にならない
             Assert.IsTrue(t.IsFaulted);
-            Assert.AreEqual(typeof(TaskCanceledException), t.Error.Exceptions.Single().GetType());
+            Assert.AreEqual(typeof(TaskCanceledException), t.Exception.Exceptions.Single().GetType());
         }
 
         [TestMethod]

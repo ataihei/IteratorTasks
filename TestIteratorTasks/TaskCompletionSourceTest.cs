@@ -41,7 +41,7 @@ namespace TestIteratorTasks
             var t = tcs.Task;
             Exception e = null;
 
-            t.ContinueWith(x => e = x.Error);
+            t.ContinueWith(x => e = x.Exception);
 
             Assert.IsNull(e);
 

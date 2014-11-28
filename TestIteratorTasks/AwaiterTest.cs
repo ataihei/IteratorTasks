@@ -11,7 +11,7 @@ namespace TestIteratorTasks
     public class AwaiterTest
     {
         [TestMethod]
-        public void IAwaiterをyield_returnして返せば_Awaiter側完了までいったんTaskをサスペンド    ()
+        public void IAwaiterをyield_returnして返せば_Awaiter側完了までいったんTaskをサスペンド()
         {
             var values = Enumerable.Range(0, 100).Select(x => 10 * x).ToArray();
 

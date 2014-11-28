@@ -117,7 +117,7 @@ namespace TestIteratorTasks
             // ContinueWith とかで Error の IsHandled を立てると UnhandledException は発生しない。
             flag = false;
             var t4 = Task.Run(Coroutines.FErrorAsync)
-                .ContinueWith(t => { var e = t.Error; e.IsHandled = true; });
+                .ContinueWith(t => { var e = t.Exception; e.IsHandled = true; });
             Assert.IsFalse(flag);
         }
     }

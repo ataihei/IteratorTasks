@@ -27,7 +27,7 @@ namespace TestIteratorTasks
 			scheduler.Update(20);
 
 			Assert.IsTrue(task.IsCompleted);
-			Assert.IsNull(task.Error);
+			Assert.IsNull(task.Exception);
 		}
 
 		[TestMethod]
