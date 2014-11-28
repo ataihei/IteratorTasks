@@ -33,17 +33,17 @@ namespace TestIteratorTasks
             // CompletedTaskのcontinueWithは、Updatecountを挟まず処理できる。
             TaskEx.First(Task.CompletedTask).ContinueWith(_ => completedCount = Task.DefaultScheduler.UpdateCount);
 
-            // Task.Run(CompletedTask)の場合、UpdateCountが増える。
+            // Task.Run(CompletedTask)の場合でも、UpdateCountを挟まず処理できる。
             TaskEx.First(Task.Run(Task.CompletedTask)).ContinueWith(_ => runCompletedCount = Task.DefaultScheduler.UpdateCount);
 
 
             Task.DefaultScheduler.Update(10);
 
-            Assert.AreEqual(iteratorCount[0], continueWithCount[0] - 1); // 本来、count[0]は0で帰ってくるべきである。現在1がくる。
+            Assert.AreEqual(iteratorCount[0], continueWithCount[0]);
             Assert.AreEqual(iteratorCount[1], continueWithCount[1]);
             Assert.AreEqual(iteratorCount[2], continueWithCount[2]);
             Assert.AreEqual(0, completedCount);
-            Assert.AreEqual(0 + 1, runCompletedCount); // updateCount + 1
+            Assert.AreEqual(0, runCompletedCount);
         }
         private IEnumerator TestIteratorZero()
         {
