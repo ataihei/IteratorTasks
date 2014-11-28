@@ -202,7 +202,7 @@ namespace TestIteratorTasks
                 .OnComplete(t =>
                 {
                     Assert.IsTrue(t.IsFaulted);
-                    Assert.IsNotNull(t.Error);
+                    Assert.IsNotNull(t.Exception);
                 });
 
             var scheduler = Task.DefaultScheduler;
@@ -292,7 +292,7 @@ namespace TestIteratorTasks
             scheduler.Update(20);
 
             // catch して無視したので、task の Error は null のはず。
-            Assert.IsNull(task.Error);
+            Assert.IsNull(task.Exception);
         }
 
         [TestMethod]

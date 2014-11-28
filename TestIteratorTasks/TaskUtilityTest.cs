@@ -60,7 +60,7 @@ namespace TestIteratorTasks
                 scheduler.Update(N + 1);
 
                 Assert.IsTrue(t.IsFaulted);
-                Assert.IsTrue(t.Error.Exceptions.Any(x => x is TimeoutException));
+                Assert.IsTrue(t.Exception.Exceptions.Any(x => x is TimeoutException));
             }
 
             // 100秒でタイムアウトのものを50秒放置後、ちゃんと完了させる
