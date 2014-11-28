@@ -57,6 +57,7 @@
     <Compile Include="TaskExtensions.cs" />
     <Compile Include="TaskFirstTest.cs" />
     <Compile Include="TaskSchedulerHelper.cs" />
+    <Compile Include="AwaitTest.cs" />
     <Compile Include="TaskTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskCompletionSourceTest.cs" />
