@@ -265,11 +265,23 @@ namespace IteratorTasks
             return cts;
         }
 
+        /// <summary>
+        /// CancellationToken からキャンセルされたときに完了するタスクを作成する。
+        /// </summary>
         public static Task ToTask(this CancellationToken ct)
         {
             var tcs = new TaskCompletionSource<bool>();
             ct.Register(() => tcs.SetResult(false));
             return tcs.Task;
+        }
+
+        /// <summary>
+        /// TimeSpan からその時間完了後に完了するタスクを作成する。
+        /// </summary>
+        public static Task ToTask(this TimeSpan time) { return time.ToTask(CancellationToken.None); }
+        public static Task ToTask(this TimeSpan time, CancellationToken ct)
+        {
+            return Task.Delay((int)time.TotalMilliseconds, ct);
         }
     }
 }
