@@ -20,11 +20,11 @@ namespace IteratorTasks
             timer = new Timer(state =>
             {
                 timer.Dispose();
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             }, null, delayMilliseconds, Timeout.Infinite);
 
             if (ct != CancellationToken.None)
-                ct.Register(() => timer.Dispose());
+                ct.Register(() => { timer.Dispose(); tcs.TrySetCanceled(); });
 
             return tcs.Task;
         }
