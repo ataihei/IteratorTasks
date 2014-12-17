@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace IteratorTasks
 {
@@ -10,6 +11,7 @@ namespace IteratorTasks
             return Delay(delayMilliseconds, CancellationToken.None, scheduler);
         }
 
+        public static Task Delay(TimeSpan span, CancellationToken ct) { return Delay((int)span.TotalMilliseconds, ct, null); }
         public static Task Delay(int delayMilliseconds, CancellationToken ct) { return Delay(delayMilliseconds, ct, null); }
         public static Task Delay(int delayMilliseconds, CancellationToken ct, TaskScheduler scheduler)
         {
