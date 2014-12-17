@@ -116,6 +116,18 @@ namespace IteratorTasks
             return t;
         }
 
+        public static Task<TResult> WithExceptionHandled<TResult>(this Task<TResult> t)
+        {
+            t.ContinueWith(_ =>
+            {
+                if (t.Exception != null)
+                {
+                    t.Exception.IsHandled = true;
+                }
+            });
+            return t;
+        }
+
         /// <summary>
         /// 前段のタスクでエラー出てたらそれを伝搬するだけで、実際にはContinueWithしないバージョン。
         /// </summary>
