@@ -266,6 +266,11 @@ namespace IteratorTasks
         }
 
         /// <summary>
+        /// 2つのトークンのうち、片方でもキャンセルされたらキャンセルされるような新しいトークンを作る。
+        /// </summary>
+        public static CancellationToken Merge(this CancellationToken t1, CancellationToken t2) { return new []{t1, t2}.ToCancellationTokenSourceOneWay().Token; }
+
+        /// <summary>
         /// CancellationToken からキャンセルされたときに完了するタスクを作成する。
         /// </summary>
         public static Task ToTask(this CancellationToken ct)
