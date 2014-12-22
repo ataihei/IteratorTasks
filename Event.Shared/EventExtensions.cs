@@ -10,6 +10,8 @@ namespace System
 {
     public static partial class EventExtensions
     {
+        #region Task 化、CancellationToken 化
+
         public static CancellationToken ToCancellationToken<TArg>(this IEvent<TArg> e)
         {
             var cts = new CancellationTokenSource();
@@ -102,6 +104,9 @@ namespace System
             return tcs.Task;
         }
 
+        #endregion
+        #region Subscribe
+
         public static IDisposable Subscribe<T>(this IEvent<T> e, Handler<T> handler)
         {
             e.Add(handler);
@@ -132,6 +137,9 @@ namespace System
             ct.Register(d.Dispose);
         }
 
+        #endregion
+        #region Subscribe 非同期版
+
         public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, AsyncHandler<T> handler)
         {
             e.Add(handler);
@@ -161,5 +169,44 @@ namespace System
             var d = e.Subscribe(handler);
             ct.Register(d.Dispose);
         }
+
+        #endregion
+        #region object から具体的な型へのキャスト
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// <paramref name="e"/> に対して Remove するすべがないんで戻り値で返したイベントの寿命に注意。
+        /// </remarks>
+        public static IEvent<T> Cast<T>(this IEvent<object> e)
+        {
+            var h = new HandlerList<T>();
+            e.Add((sender, arg) => h.Invoke(sender, (T)arg));
+            return h;
+        }
+
+        public static IDisposable Subscribe<T>(this IEvent<object> e, Handler<T> handler)
+        {
+            Handler<object> objHandler = (sender, arg) =>
+            {
+                if(arg is T)
+                    handler(sender, (T)arg);
+            };
+            e.Add(objHandler);
+            return Disposable.Create(() => e.Remove(objHandler));
+        }
+        public static IDisposable Subscribe<T>(this IEvent<object> e, Action<T> handler)
+        {
+            return Subscribe(e, (_1, arg) =>
+            {
+                if (arg is T)
+                    handler((T)arg);
+            });
+        }
+
+        #endregion
     }
 }
