@@ -3,8 +3,10 @@ using IteratorTasks;
 #else
 using System.Threading;
 using System.Threading.Tasks;
-using System.Reactive.Disposables;
 #endif
+
+using System.Reactive.Disposables;
+using System.ComponentModel;
 
 namespace System
 {
@@ -44,23 +46,22 @@ namespace System
         {
             var tcs = new TaskCompletionSource<TArg>();
 
-            Handler<TArg> a = null;
-            a = (sender, args) =>
+            IDisposable subscription = null;
+
+            subscription = e.Subscribe((sender, args) =>
             {
                 if (predicate(args))
                 {
-                    e.Remove(a);
+                    subscription.Dispose();
                     tcs.TrySetResult(args);
                 }
-            };
-
-            e.Add(a);
+            });
 
             if (ct != CancellationToken.None)
             {
                 ct.Register(() =>
                 {
-                    e.Remove(a);
+                    subscription.Dispose();
                     tcs.TrySetCanceled();
                 });
             }
@@ -77,26 +78,25 @@ namespace System
         {
             var tcs = new TaskCompletionSource<TArg>();
 
-            Handler<TArg> a = null;
-            a = (sender, args) =>
+            IDisposable subscription = null;
+
+            subscription = e.Subscribe((sender, args) =>
             {
                 predicate(args).ContinueWith(t =>
                 {
                     if (t.Result)
                     {
-                        e.Remove(a);
+                        subscription.Dispose();
                         tcs.TrySetResult(args);
                     }
                 });
-            };
-
-            e.Add(a);
+            });
 
             if (ct != CancellationToken.None)
             {
                 ct.Register(() =>
                 {
-                    e.Remove(a);
+                    subscription.Dispose();
                     tcs.TrySetCanceled();
                 });
             }
@@ -107,18 +107,13 @@ namespace System
         #endregion
         #region Subscribe
 
-        public static IDisposable Subscribe<T>(this IEvent<T> e, Handler<T> handler)
-        {
-            e.Add(handler);
-            return Disposable.Create(() => e.Remove(handler));
-        }
         public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> handler)
         {
-            return Subscribe(e, (_1, arg) => handler(arg));
+            return e.Subscribe((_1, arg) => handler(arg));
         }
         public static IDisposable Subscribe<T>(this IEvent<T> e, Action handler)
         {
-            return Subscribe(e, (_1, _2) => handler());
+            return e.Subscribe((_1, _2) => handler());
         }
 
         public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Handler<T> handler)
@@ -179,12 +174,12 @@ namespace System
         /// <param name="e"></param>
         /// <returns></returns>
         /// <remarks>
-        /// <paramref name="e"/> に対して Remove するすべがないんで戻り値で返したイベントの寿命に注意。
+        /// <paramref name="e"/> の Subscribe に対して Dispose するすべがないんで戻り値で返したイベントの寿命に注意。
         /// </remarks>
         public static IEvent<T> Cast<T>(this IEvent<object> e)
         {
             var h = new HandlerList<T>();
-            e.Add((sender, arg) => h.Invoke(sender, (T)arg));
+            e.Subscribe((sender, arg) => h.Invoke(sender, (T)arg));
             return h;
         }
 
@@ -195,12 +190,11 @@ namespace System
                 if(arg is T)
                     handler(sender, (T)arg);
             };
-            e.Add(objHandler);
-            return Disposable.Create(() => e.Remove(objHandler));
+            return e.Subscribe(objHandler);
         }
         public static IDisposable Subscribe<T>(this IEvent<object> e, Action<T> handler)
         {
-            return Subscribe(e, (_1, arg) =>
+            return e.Subscribe((_1, arg) =>
             {
                 if (arg is T)
                     handler((T)arg);

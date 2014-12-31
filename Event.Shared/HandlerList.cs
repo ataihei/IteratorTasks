@@ -1,4 +1,12 @@
-﻿using System.Linq;
+﻿#if UseIteratorTasks
+using IteratorTasks;
+#else
+using System.Threading;
+using System.Threading.Tasks;
+#endif
+
+using System.Linq;
+using System.Reactive.Disposables;
 
 namespace System
 {
@@ -37,6 +45,12 @@ namespace System
             {
                 if (a != null) a(sender, args);
             }
+        }
+
+        public IDisposable Subscribe(Handler<TArg> action)
+        {
+            Add(action);
+            return Disposable.Create(() => Remove(action));
         }
 
         public void Add(Handler<TArg> action)
