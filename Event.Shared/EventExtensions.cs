@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 #endif
 
 using System.Reactive.Disposables;
-using System.ComponentModel;
 
 namespace System
 {
