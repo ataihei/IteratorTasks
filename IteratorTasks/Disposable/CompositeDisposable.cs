@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace IteratorTasks
+namespace System.Reactive.Disposables
 {
     public class CompositeDisposable : IDisposable
     {
