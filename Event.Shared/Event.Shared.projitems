@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AsyncHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncHandlerList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FromEventPattern.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HandlerList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAsyncEvent.cs" />

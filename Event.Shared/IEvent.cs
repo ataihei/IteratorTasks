@@ -9,7 +9,6 @@
     /// <typeparam name="TArg">イベント引数の型。</typeparam>
     public interface IEvent<TArg>
     {
-        void Add(Handler<TArg> action);
-        void Remove(Handler<TArg> action);
+        IDisposable Subscribe(Handler<TArg> action);
     }
 }

@@ -2,7 +2,7 @@
 
 using System;
 
-namespace IteratorTasks
+namespace System.Reactive.Disposables
 {
     public static class Disposable
     {

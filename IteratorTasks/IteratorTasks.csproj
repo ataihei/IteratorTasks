@@ -59,8 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateException.cs" />
-    <Compile Include="CompositeDisposable.cs" />
-    <Compile Include="Disposable.cs" />
+    <Compile Include="Disposable\CompositeDisposable.cs" />
+    <Compile Include="Disposable\Disposable.cs" />
     <Compile Include="IAwaiter.cs" />
     <Compile Include="IProgress.cs" />
     <Compile Include="Progress.cs" />
