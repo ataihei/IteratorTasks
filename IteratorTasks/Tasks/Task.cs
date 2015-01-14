@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define CaptureStackTrace
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +20,18 @@ namespace IteratorTasks
         /// </summary>
         internal bool _updated;
 
-        internal Task() { }
+#if CaptureStackTrace && DEBUG
+        System.Diagnostics.StackTrace _stackTrace;
+#endif
 
-        public Task(IEnumerator routine)
+        internal Task()
+        {
+#if CaptureStackTrace && DEBUG
+            _stackTrace = new System.Diagnostics.StackTrace();
+#endif
+        }
+
+        public Task(IEnumerator routine) : this()
         {
             if (routine == null)
                 throw new ArgumentNullException("routine");
@@ -29,7 +40,7 @@ namespace IteratorTasks
             Routine = routine;
         }
 
-        public Task(Func<IEnumerator> routine)
+        public Task(Func<IEnumerator> routine) : this()
         {
             Status = TaskStatus.Created;
             try
