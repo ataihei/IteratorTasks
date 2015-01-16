@@ -175,6 +175,7 @@ namespace System
         /// <remarks>
         /// <paramref name="e"/> の Subscribe に対して Dispose するすべがないんで戻り値で返したイベントの寿命に注意。
         /// </remarks>
+        [Obsolete("Use the System.Events.Event.Cast instead")]
         public static IEvent<T> Cast<T>(this IEvent<object> e)
         {
             var h = new HandlerList<T>();
