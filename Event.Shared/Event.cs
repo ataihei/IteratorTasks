@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Reactive.Disposables;
 
 namespace System.Events
 {
@@ -58,6 +57,66 @@ namespace System.Events
             {
                 return source.Subscribe((sender, arg) => e.Invoke(sender, (T)arg));
             });
+        }
+
+        /// <summary>
+        /// 複数のイベントを1つに併合。
+        /// </summary>
+        public static IEvent<T> Merge<T>(this IEvent<T> source1, IEvent<T> source2)
+        {
+            return Merge(new[] { source1, source2 });
+        }
+
+        /// <summary>
+        /// 複数のイベントを1つに併合。
+        /// </summary>
+        public static IEvent<T> Merge<T>(params IEvent<T>[] sources)
+        {
+            return Create<T>(list =>
+            {
+                var d = new CompositeDisposable();
+                foreach (var s in sources)
+                {
+                    d.Add(s.Subscribe((sender, x) => list.Invoke(sender, x)));
+                }
+                return d;
+            });
+        }
+
+        /// <summary>
+        /// 複数のイベントを1つに併合。
+        /// 型違い版。
+        /// </summary>
+        public static IEvent<object> Merge<T1, T2>(IEvent<T1> source1, IEvent<T2> source2)
+        {
+            return Merge<object>(
+                source1.Select(x => (object)x),
+                source2.Select(x => (object)x));
+        }
+
+        /// <summary>
+        /// 複数のイベントを1つに併合。
+        /// 型違い版。
+        /// </summary>
+        public static IEvent<object> Merge<T1, T2, T3>(IEvent<T1> source1, IEvent<T2> source2, IEvent<T3> source3)
+        {
+            return Merge<object>(
+                source1.Select(x => (object)x),
+                source2.Select(x => (object)x),
+                source3.Select(x => (object)x));
+        }
+
+        /// <summary>
+        /// 複数のイベントを1つに併合。
+        /// 型違い版。
+        /// </summary>
+        public static IEvent<object> Merge<T1, T2, T3, T4>(IEvent<T1> source1, IEvent<T2> source2, IEvent<T3> source3, IEvent<T4> source4)
+        {
+            return Merge<object>(
+                source1.Select(x => (object)x),
+                source2.Select(x => (object)x),
+                source3.Select(x => (object)x),
+                source4.Select(x => (object)x));
         }
     }
 
