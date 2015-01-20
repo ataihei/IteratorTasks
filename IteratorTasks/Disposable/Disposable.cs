@@ -10,6 +10,11 @@ namespace System.Reactive.Disposables
         {
             return new ActionDisposer(dispose);
         }
+
+        /// <summary>
+        /// 何もしないダミー。
+        /// </summary>
+        public readonly static IDisposable Empty = new EmptyDisposer();
     }
 
     internal class ActionDisposer : IDisposable
@@ -27,5 +32,10 @@ namespace System.Reactive.Disposables
         {
             _onDispose();
         }
+    }
+
+    internal class EmptyDisposer : IDisposable
+    {
+        public void Dispose() { }
     }
 }
