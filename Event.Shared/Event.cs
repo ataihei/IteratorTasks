@@ -132,6 +132,30 @@ namespace System.Events
                 source4.Select(x => (object)x),
                 source5.Select(x => (object)x));
         }
+
+        /// <summary>
+        /// 何も起きないダミーイベント。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IEvent<T> Empty<T>() { return EmptyEvent<T>.Singleton; }
+
+        class EmptyEvent<T> : IEvent<T>
+        {
+            public static readonly EmptyEvent<T> Singleton = new EmptyEvent<T>();
+
+            public IDisposable Subscribe(Handler<T> action)
+            {
+                return Disposable.Empty;
+            }
+
+            private static IDisposable e = new EmptyDisposer();
+
+            private class EmptyDisposer : IDisposable
+            {
+                public void Dispose() { }
+            }
+        }
     }
 
     internal class DelegateEvent<TArg> : IEvent<TArg>
