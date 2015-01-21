@@ -1,11 +1,11 @@
 ﻿// System.Threading.Tasks だけじゃなくて、Rx 系も互換ライブラリを
 
-using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace System.Reactive.Disposables
 {
-    public class CompositeDisposable : IDisposable
+    public class CompositeDisposable : IDisposable, IEnumerable<IDisposable>, IEnumerable
     {
         private List<IDisposable> _list = new List<IDisposable>();
 
@@ -18,9 +18,13 @@ namespace System.Reactive.Disposables
         {
             foreach (var x in _list)
             {
-                x.Dispose();
+                if (x != null)
+                    x.Dispose();
             }
             _list.Clear();
         }
+
+        IEnumerator<IDisposable> IEnumerable<IDisposable>.GetEnumerator() { return _list.GetEnumerator(); }
+        IEnumerator IEnumerable.GetEnumerator() { return _list.GetEnumerator(); }
     }
 }
