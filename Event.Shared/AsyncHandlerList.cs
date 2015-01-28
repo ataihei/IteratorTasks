@@ -28,11 +28,21 @@ namespace System
         private AsyncHandler<TArg>[] _list;
         private object _sync = new object();
 
+        /// <summary>
+        /// 1つでもハンドラーが刺さってたら true。
+        /// </summary>
         public bool HasAny { get { return _list != null && _list.Length != 0; } }
 
 #if !UseIteratorTasks
         async
 #endif
+
+        /// <summary>
+        /// イベントを起こす。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public Task InvokeAsync(object sender, TArg args)
         {
             // ↓これだけでいいはずなんだけども、たぶん iOS AOT で動かない。
@@ -64,6 +74,10 @@ namespace System
 #endif
         }
 
+        /// <summary>
+        /// <see cref="IAsyncEvent{TArg}.Add(AsyncHandler{TArg})"/>
+        /// </summary>
+        /// <param name="action"></param>
         public void Add(AsyncHandler<TArg> action)
         {
             // こっちは CompareExchage
@@ -75,6 +89,10 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// <see cref="IAsyncEvent{TArg}.Remove(AsyncHandler{TArg})"/>
+        /// </summary>
+        /// <param name="action"></param>
         public void Remove(AsyncHandler<TArg> action)
         {
             lock (_sync)
@@ -95,6 +113,12 @@ namespace System
     /// </remarks>
     public class AsyncHandlerList : AsyncHandlerList<Null>
     {
+        /// <summary>
+        /// <see cref="AsyncHandlerList{TArg}.InvokeAsync(object, TArg)"/>
+        /// 引数を渡す必要がないので、省略した版。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
         public Task InvokeAsync(object sender) { return InvokeAsync(sender, null); }
     }
 }
