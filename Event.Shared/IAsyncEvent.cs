@@ -7,7 +7,16 @@
     /// <typeparam name="TArg">イベント引数の型。</typeparam>
     public interface IAsyncEvent<TArg>
     {
+        /// <summary>
+        /// ハンドラー追加。
+        /// </summary>
+        /// <param name="action"></param>
         void Add(AsyncHandler<TArg> action);
+
+        /// <summary>
+        /// ハンドラー削除。
+        /// </summary>
+        /// <param name="action"></param>
         void Remove(AsyncHandler<TArg> action);
     }
 }
