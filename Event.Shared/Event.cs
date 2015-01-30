@@ -134,6 +134,21 @@ namespace System.Events
         }
 
         /// <summary>
+        /// 複数のイベントを1つに併合。
+        /// 型違い版。
+        /// </summary>
+        public static IEvent<object> Merge<T1, T2, T3, T4, T5, T6>(IEvent<T1> source1, IEvent<T2> source2, IEvent<T3> source3, IEvent<T4> source4, IEvent<T5> source5, IEvent<T6> source6)
+        {
+            return Merge<object>(
+                source1.Select(x => (object)x),
+                source2.Select(x => (object)x),
+                source3.Select(x => (object)x),
+                source4.Select(x => (object)x),
+                source5.Select(x => (object)x),
+                source6.Select(x => (object)x));
+        }
+
+        /// <summary>
         /// 何も起きないダミーイベント。
         /// </summary>
         /// <typeparam name="T"></typeparam>
