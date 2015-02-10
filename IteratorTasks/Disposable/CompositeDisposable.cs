@@ -27,4 +27,15 @@ namespace System.Reactive.Disposables
         IEnumerator<IDisposable> IEnumerable<IDisposable>.GetEnumerator() { return _list.GetEnumerator(); }
         IEnumerator IEnumerable.GetEnumerator() { return _list.GetEnumerator(); }
     }
+
+    public static class CompositeDisposableExtensions
+    {
+        public static void AddRange(this CompositeDisposable composite, IEnumerable<IDisposable> items)
+        {
+            foreach(var i in items)
+            {
+                composite.Add(i);
+            }
+        }
+    }
 }
