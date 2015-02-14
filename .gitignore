@@ -1,4 +1,5 @@
 *.pidb
+.vs
 *.suo
 *.userprefs
 */bin/*
