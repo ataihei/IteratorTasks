@@ -55,7 +55,7 @@
   <ItemGroup>
     <Compile Include="Coroutines.cs" />
     <Compile Include="TaskExtensions.cs" />
-    <Compile Include="TaskFirstTest.cs" />
+    <Compile Include="TaskWhenAnyTest.cs" />
     <Compile Include="TaskSchedulerHelper.cs" />
     <Compile Include="AwaitTest.cs" />
     <Compile Include="TaskTest.cs" />

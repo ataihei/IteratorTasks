@@ -17,6 +17,12 @@ namespace IteratorTasks
         /// 複数のタスクのうち、最初に終わったものの値を返す。
         /// 残りのタスクは内部でキャンセルする。
         /// </summary>
+        public static Task<Task<T>> WhenAny<T>(TaskScheduler scheduler, CancellationTokenSource cts, params Task<T>[] tasks) { return WhenAny(tasks, scheduler, cts); }
+
+        /// <summary>
+        /// 複数のタスクのうち、最初に終わったものの値を返す。
+        /// 残りのタスクは内部でキャンセルする。
+        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tasks">最初の1つを待ちたいタスク一覧。</param>
         /// <param name="cts"></param>
@@ -70,7 +76,13 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="tasks"></param>
         /// <returns></returns>
-        public static Task<Task> WhenAny(params Task[] tasks) { return WhenAny(null, tasks, null); }
+        public static Task<Task> WhenAny(params Task[] tasks) { return WhenAny(tasks, null); }
+
+        /// <summary>
+        /// 複数のタスクのうち、最初に終わったものの値を返す。
+        /// 残りのタスクは内部でキャンセルする。
+        /// </summary>
+        public static Task<Task> WhenAny(TaskScheduler scheduler, CancellationTokenSource cts, params Task[] tasks) { return WhenAny(null, tasks, scheduler, cts); }
 
         /// <summary>
         /// 複数のタスクのうち、最初に終わったものの値を返す。
@@ -103,6 +115,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="onComplete">最初の1つのタスクが終了時に呼ばれる。Task.WhenAny().ContinueWith(onComplete) すると呼ばれるフレームが1フレーム遅れるけども、これならたぶん即呼ばれる。</param>
         /// <param name="tasks">最初の1つを待ちたいタスク一覧。</param>
+        /// <param name="scheduler">このタスクを実行するスケジューラ。</param>
         /// <param name="cts"></param>
         /// <returns>最初の1つだけ終わったら完了になるタスク。</returns>
         public static Task<Task> WhenAny(Action onComplete, Task[] tasks, TaskScheduler scheduler, CancellationTokenSource cts)
