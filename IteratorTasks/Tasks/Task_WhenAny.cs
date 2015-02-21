@@ -25,17 +25,11 @@ namespace IteratorTasks
                 throw new ArgumentException("tasks must contain at least one task", "tasks");
 
             var tcs = new TaskCompletionSource<Task<T>>(scheduler);
-            // Task.WhenAnyに終わったタスクを渡すとtcs = null が先に呼ばれてnullぽ出るのでここで受けておく
-            var task0 = tcs.Task;
 
             if (cts != null)
                 cts.Token.Register(() =>
                 {
-                    if (tcs != null)
-                    {
-                        tcs.SetCanceled();
-                        tcs = null;
-                    }
+                    tcs.TrySetCanceled();
                 });
 
             foreach (var task in tasks)
@@ -45,17 +39,13 @@ namespace IteratorTasks
 
                 task.ContinueWith(t =>
                 {
-                    if (tcs != null)
-                    {
-                        tcs.SetResult(t);
-                        tcs = null;
-                        if (cts != null)
-                            cts.Cancel();
-                    }
+                    tcs.TrySetResult(t);
+                    if (cts != null)
+                        cts.Cancel();
                 });
             }
 
-            return task0;
+            return tcs.Task;
         }
 
         public static Task<Task> WhenAny(params Task[] tasks) { return WhenAny(null, tasks, null); }
@@ -85,8 +75,6 @@ namespace IteratorTasks
                 throw new ArgumentException("tasks must contain at least one task", "tasks");
 
             var tcs = new TaskCompletionSource<Task>(scheduler);
-            // Task.WhenAnyに終わったタスクを渡すとtcs = null が先に呼ばれてnullぽ出るのでここで受けておく
-            var task0 = tcs.Task;
 
             if (cts != null)
                 cts.Token.Register(() =>
@@ -94,11 +82,7 @@ namespace IteratorTasks
                     if (onComplete != null)
                         onComplete();
 
-                    if (tcs != null)
-                    {
-                        tcs.SetCanceled();
-                        tcs = null;
-                    }
+                    tcs.TrySetCanceled();
                 });
 
             foreach (var task in tasks)
@@ -108,17 +92,13 @@ namespace IteratorTasks
 
                 task.ContinueWith(t =>
                 {
-                    if (tcs != null)
-                    {
-                        tcs.SetResult(t);
-                        tcs = null;
-                        if (cts != null)
-                            cts.Cancel();
-                    }
+                    tcs.TrySetResult(t);
+                    if (cts != null)
+                        cts.Cancel();
                 });
             }
 
-            return task0;
+            return tcs.Task;
         }
     }
 }
