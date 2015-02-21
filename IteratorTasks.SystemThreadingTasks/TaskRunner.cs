@@ -16,13 +16,30 @@ namespace IteratorTasks
         private volatile bool _isAlive;
         private ST.CancellationTokenSource _cts = new ST.CancellationTokenSource();
 
+        /// <summary>
+        /// <see cref="IteratorTasks.TaskScheduler"/>
+        /// </summary>
         public IT.TaskScheduler Scheduler { get; private set; }
+
+        /// <summary>
+        /// キャンセルトークン。
+        /// </summary>
         public ST.CancellationToken Token { get { return _cts.Token; } }
 
+        /// <summary>
+        /// エラーが発生したかどうか。
+        /// </summary>
         public bool HasError { get; private set; }
 
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
         public TaskRunner() : this(new IT.TaskScheduler()) { }
 
+        /// <summary>
+        /// コンストラクタ。
+        /// </summary>
+        /// <param name="scheduler"></param>
         public TaskRunner(IT.TaskScheduler scheduler)
         {
             Scheduler = scheduler;
@@ -50,6 +67,10 @@ namespace IteratorTasks
             }
         }
 
+        /// <summary>
+        /// タスクを止める。
+        /// </summary>
+        /// <returns></returns>
         public TT.Task Stop()
         {
             _cts.Cancel();
@@ -57,8 +78,14 @@ namespace IteratorTasks
             return _task;
         }
 
+        /// <summary>
+        /// <see cref="System.Threading.Tasks.Task"/>
+        /// </summary>
         public TT.Task Task { get { return _task; } }
 
+        /// <summary>
+        /// 例外発生時のイベント。
+        /// </summary>
         public event EventHandler<Exception> Error;
 
         private void OnError(Exception ex)

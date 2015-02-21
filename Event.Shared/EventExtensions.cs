@@ -9,10 +9,19 @@ using System.Reactive.Disposables;
 
 namespace System
 {
+    /// <summary>
+    /// <see cref="IEvent{T}"/>に対する拡張メソッド。
+    /// </summary>
     public static partial class EventExtensions
     {
         #region Task 化、CancellationToken 化
 
+        /// <summary>
+        /// イベントが起きた時にキャンセルするキャンセルトークンに変換。
+        /// </summary>
+        /// <typeparam name="TArg"></typeparam>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public static CancellationToken ToCancellationToken<TArg>(this IEvent<TArg> e)
         {
             var cts = new CancellationTokenSource();
@@ -27,6 +36,10 @@ namespace System
         {
             return FirstAsync(e, _ => true, ct);
         }
+
+        /// <summary>
+        /// イベントを1回だけ受け取る。
+        /// </summary>
         public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e)
         {
             return FirstAsync(e, CancellationToken.None);
@@ -106,25 +119,44 @@ namespace System
         #endregion
         #region Subscribe
 
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
+
         public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> handler)
         {
             return e.Subscribe((_1, arg) => handler(arg));
         }
+
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
         public static IDisposable Subscribe<T>(this IEvent<T> e, Action handler)
         {
             return e.Subscribe((_1, _2) => handler());
         }
 
+        /// <summary>
+        /// キャンセルされるまでの間イベントを購読する。
+        /// </summary>
         public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Handler<T> handler)
         {
             var d = e.Subscribe(handler);
             ct.Register(d.Dispose);
         }
+
+        /// <summary>
+        /// キャンセルされるまでの間イベントを購読する。
+        /// </summary>
         public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Action<T> handler)
         {
             var d = e.Subscribe(handler);
             ct.Register(d.Dispose);
         }
+
+        /// <summary>
+        /// キャンセルされるまでの間イベントを購読する。
+        /// </summary>
         public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Action handler)
         {
             var d = e.Subscribe(handler);
@@ -134,30 +166,52 @@ namespace System
         #endregion
         #region Subscribe 非同期版
 
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
         public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, AsyncHandler<T> handler)
         {
             e.Add(handler);
             return Disposable.Create(() => e.Remove(handler));
         }
+
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
         public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<T, Task> handler)
         {
             return Subscribe(e, (_1, arg) => handler(arg));
         }
+
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
         public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<Task> handler)
         {
             return Subscribe(e, (_1, _2) => handler());
         }
 
+        /// <summary>
+        /// キャンセルされるまでの間イベントを購読する。
+        /// </summary>
         public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, AsyncHandler<T> handler)
         {
             var d = e.Subscribe(handler);
             ct.Register(d.Dispose);
         }
+
+        /// <summary>
+        /// キャンセルされるまでの間イベントを購読する。
+        /// </summary>
         public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, Func<T, Task> handler)
         {
             var d = e.Subscribe(handler);
             ct.Register(d.Dispose);
         }
+
+        /// <summary>
+        /// キャンセルされるまでの間イベントを購読する。
+        /// </summary>
         public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, Func<Task> handler)
         {
             var d = e.Subscribe(handler);
@@ -183,6 +237,9 @@ namespace System
             return h;
         }
 
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
         public static IDisposable Subscribe<T>(this IEvent<object> e, Handler<T> handler)
         {
             Handler<object> objHandler = (sender, arg) =>
@@ -192,6 +249,10 @@ namespace System
             };
             return e.Subscribe(objHandler);
         }
+
+        /// <summary>
+        /// イベントを購読する。
+        /// </summary>
         public static IDisposable Subscribe<T>(this IEvent<object> e, Action<T> handler)
         {
             return e.Subscribe((_1, arg) =>

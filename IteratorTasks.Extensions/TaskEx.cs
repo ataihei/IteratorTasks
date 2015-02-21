@@ -5,8 +5,16 @@ namespace IteratorTasks
 {
     public static partial class TaskEx
     {
+        /// <summary>
+        /// 複数のタスクのうち、最初に終わったものの値を返す。
+        /// 残りのタスクは内部でキャンセルする。
+        /// </summary>
         public static Task<T> First<T>(params Task<T>[] tasks) { return First(null, tasks); }
 
+        /// <summary>
+        /// 複数のタスクのうち、最初に終わったものの値を返す。
+        /// 残りのタスクは内部でキャンセルする。
+        /// </summary>
         public static Task<T> First<T>(params AsyncFunc<T>[] tasks)
         {
             var cts = new CancellationTokenSource();
@@ -27,12 +35,20 @@ namespace IteratorTasks
             return First(null, cts, tasks);
         }
 
+        /// <summary>
+        /// 複数のタスクのうち、最初に終わったものの値を返す。
+        /// 残りのタスクは内部でキャンセルする。
+        /// </summary>
         public static Task<T> First<T>(CancellationToken ct, params Task<T>[] tasks)
         {
             var cts = ct.ToCancellationTokenSourceOneWay();
             return First(cts, tasks);
         }
 
+        /// <summary>
+        /// 複数のタスクのうち、最初に終わったものの値を返す。
+        /// 残りのタスクは内部でキャンセルする。
+        /// </summary>
         public static Task<T> First<T>(TaskScheduler scheduler, CancellationTokenSource cts, params Task<T>[] tasks)
         {
             if (tasks.Length == 0)
@@ -103,7 +119,7 @@ namespace IteratorTasks
         /// 複数のタスクのうち、最初に終わったものの値を返す。
         /// 残りのタスクは内部でキャンセルする。
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="scheduler">スケジューラ。</param>
         /// <param name="tasks">最初の1つを待ちたいタスク一覧。</param>
         /// <param name="cts"></param>
         /// <returns>最初の1つだけ終わったら完了になるタスク。</returns>

@@ -50,7 +50,15 @@ namespace System
             return d;
         }
 
+        /// <summary>
+        /// 弱イベント参照。
+        /// 戻り値の <see cref="IDisposable"/> を参照しているものが誰からも参照されなくなったら自動的にイベント購読解除する。
+        /// </summary>
         public static IDisposable WeakSubscribe<T>(this IEvent<T> e, Action<T> handler) { return e.WeakSubscribe((sender, arg) => handler(arg)); }
+        /// <summary>
+        /// 弱イベント参照。
+        /// 戻り値の <see cref="IDisposable"/> を参照しているものが誰からも参照されなくなったら自動的にイベント購読解除する。
+        /// </summary>
         public static IDisposable WeakSubscribe<T>(this IEvent<T> e, Action handler) { return e.WeakSubscribe((sender, arg) => handler()); }
     }
 }

@@ -9,6 +9,11 @@
     /// <typeparam name="TArg">イベント引数の型。</typeparam>
     public interface IEvent<TArg>
     {
+        /// <summary>
+        /// イベントを購読。
+        /// </summary>
+        /// <param name="action">ハンドラー。</param>
+        /// <returns>イベント購読解除用の<see cref="IDisposable"/></returns>
         IDisposable Subscribe(Handler<TArg> action);
     }
 }

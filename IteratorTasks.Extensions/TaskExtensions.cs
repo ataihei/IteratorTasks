@@ -43,7 +43,7 @@ namespace IteratorTasks
         /// <summary>
         /// タスクがエラー終了時、かつ、指定した例外が出た場合にのみ呼ばれる。
         /// </summary>
-        /// <typeparam name="T">指定したい例外の型</typeparam>
+        /// <typeparam name="TEx">指定したい例外の型</typeparam>
         /// <param name="t"></param>
         /// <param name="a"></param>
         /// <returns></returns>
@@ -98,12 +98,18 @@ namespace IteratorTasks
         /// <summary>
         /// 条件付きでエラーがあるときにエラーを再 throw する。
         /// </summary>
+        /// <param name="t">対象のタスク。</param>
         /// <param name="check">再 throw 条件チェック。 trueを返すとエラーを throw する</param>
         public static void ThrowIfException(this Task t, Func<Task, bool> check)
         {
             if (t.Exception != null && check(t)) throw t.Exception;
         }
 
+        /// <summary>
+        /// タスクの例外をハンドル済みにする。
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static Task WithExceptionHandled(this Task t)
         {
             t.ContinueWith(_ =>
@@ -116,6 +122,11 @@ namespace IteratorTasks
             return t;
         }
 
+        /// <summary>
+        /// タスクの例外をハンドル済みにする。
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static Task<TResult> WithExceptionHandled<TResult>(this Task<TResult> t)
         {
             t.ContinueWith(_ =>
@@ -129,12 +140,8 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// 前段のタスクでエラー出てたらそれを伝搬するだけで、実際にはContinueWithしないバージョン。
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
         /// </summary>
-        /// <param name="t"></param>
-        /// <param name="func"></param>
-        /// <param name="rethrowOnError"></param>
-        /// <returns></returns>
         public static Task ContinueWith(this Task t, Action<Task> func, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWith(func);
@@ -144,6 +151,10 @@ namespace IteratorTasks
                 else return x.ContinueWith(func);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task<T> ContinueWith<T>(this Task t, Func<Task, T> func, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWith(func);
@@ -153,6 +164,10 @@ namespace IteratorTasks
                 else return x.ContinueWith(func);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task ContinueWithIterator(this Task t, Func<Task, IEnumerator> routine, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithIterator(routine);
@@ -162,6 +177,10 @@ namespace IteratorTasks
                 else return x.ContinueWithIterator(routine);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task ContinueWithTask(this Task t, Func<Task, Task> starter, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithTask(starter);
@@ -171,6 +190,10 @@ namespace IteratorTasks
                 else return x.ContinueWithTask(starter);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task<T> ContinueWithTask<T>(this Task t, Func<Task, Task<T>> starter, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithTask(starter);
@@ -181,6 +204,9 @@ namespace IteratorTasks
             });
         }
 
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task ContinueWith<T>(this Task<T> t, Action<Task<T>> func, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWith(func);
@@ -190,6 +216,10 @@ namespace IteratorTasks
                 else return x.ContinueWith(func);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task<U> ContinueWith<T, U>(this Task<T> t, Func<Task<T>, U> func, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWith(func);
@@ -199,6 +229,10 @@ namespace IteratorTasks
                 else return x.ContinueWith(func);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task ContinueWithIterator<T>(this Task<T> t, Func<Task<T>, IEnumerator> routine, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithIterator(routine);
@@ -208,6 +242,10 @@ namespace IteratorTasks
                 else return x.ContinueWithIterator(routine);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task<U> ContinueWithIterator<T, U>(this Task<T> t, Func<Task<T>, Action<U>, IEnumerator> routine, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithIterator(routine);
@@ -217,6 +255,10 @@ namespace IteratorTasks
                 else return x.ContinueWithIterator(routine);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task ContinueWithTask<T>(this Task<T> t, Func<Task<T>, Task> starter, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithTask(starter);
@@ -226,6 +268,10 @@ namespace IteratorTasks
                 else return x.ContinueWithTask(starter);
             });
         }
+
+        /// <summary>
+        /// 前段のタスクでエラー出てたら、エラーを伝搬するだけか、それとも次のタスクを実行するか分岐できる版。
+        /// </summary>
         public static Task<U> ContinueWithTask<T, U>(this Task<T> t, Func<Task<T>, Task<U>> starter, bool rethrowOnError)
         {
             if (!rethrowOnError) return t.ContinueWithTask(starter);

@@ -3,6 +3,9 @@ using System.Reactive.Disposables;
 
 namespace System.Events
 {
+    /// <summary>
+    /// <see cref="IEvent{T}"/>に対する拡張メソッド。
+    /// </summary>
     public static class Event
     {
         /// <summary>
