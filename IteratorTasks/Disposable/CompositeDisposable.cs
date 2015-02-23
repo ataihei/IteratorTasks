@@ -6,14 +6,14 @@ using System.Collections.Generic;
 namespace System.Reactive.Disposables
 {
     /// <summary>
-    /// 複数の<see cref="IDisposable"/>をまとめてDisposeすることができる<see cref="IDisposable"/>のコレクション。
+    /// 同時に <see cref="IDisposable.Dispose"/> される複数の disposable をグループ化して管理するクラス。
     /// </summary>
     public class CompositeDisposable : IDisposable, IEnumerable<IDisposable>, IEnumerable
     {
         private List<IDisposable> _list = new List<IDisposable>();
 
         /// <summary>
-        /// <see cref="IDisposable"/>を追加。
+        /// 追加。
         /// </summary>
         /// <param name="d"></param>
         public void Add(IDisposable d)
@@ -22,7 +22,7 @@ namespace System.Reactive.Disposables
         }
 
         /// <summary>
-        /// 登録されてるすべての<see cref="IDisposable"/>を Dispose する。
+        /// グループ内の disposable をまとめて <see cref="IDisposable.Dispose"/>。
         /// </summary>
         public void Dispose()
         {

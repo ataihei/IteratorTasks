@@ -3,12 +3,12 @@
 namespace System
 {
     /// <summary>
-    /// <see cref="IDisposable"/>の非同期版。
+    /// <see cref="IDisposable"/> の非同期版。
     /// </summary>
     public interface IAsyncDisposable
     {
         /// <summary>
-        /// 非同期にDisposeする。
+        /// 破棄処理。
         /// </summary>
         /// <returns></returns>
         Task DisposeAsync();

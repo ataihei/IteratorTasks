@@ -5,12 +5,29 @@ using System.Linq;
 
 namespace IteratorTasks
 {
+    /// <summary>
+    /// <see cref="Task"/> の実行スケジューラー。
+    /// </summary>
     public class TaskScheduler
     {
         static int gid = 0;
         int id;
+
+        /// <summary>
+        /// 主に診断用。
+        /// スケジューラーのID。
+        /// </summary>
         public int Id { get { return id; } }
+
+        /// <summary>
+        /// <see cref="Id"/> を連番で振る。
+        /// </summary>
         public TaskScheduler() { id = ++gid; }
+
+        /// <summary>
+        /// 主に診断用。
+        /// ID を直接指定。
+        /// </summary>
         internal TaskScheduler(int id) { this.id = id; }
 
         /// <summary>
@@ -101,7 +118,7 @@ namespace IteratorTasks
         /// TaskCompletionSource 越しに作られるタスクは、実行自体はスケジューラーの管轄外ではあるものの、
         /// UnhandledException で未処理例外を拾うためには登録が必要。
         /// </summary>
-        /// <param name="task"></param>
+        /// <param name="tcs"></param>
         public void QueueTask<T>(TaskCompletionSource<T> tcs)
         {
             lock (sync)
