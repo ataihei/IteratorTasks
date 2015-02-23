@@ -77,9 +77,8 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// タイムアウトつきのタスクを作る。
+        /// 指定した<see cref="TimeSpan"/>後にキャンセルされる<see cref="Task"/>を作成する。
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="routine"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
@@ -89,6 +88,12 @@ namespace IteratorTasks
             return Task.Run(routine, cts);
         }
 
+        /// <summary>
+        /// 指定した<see cref="TimeSpan"/>後にキャンセルされる<see cref="Task{T}"/>を作成する。
+        /// </summary>
+        /// <param name="starter"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static Task RunWithTimeout(Func<CancellationToken, Task> starter, TimeSpan timeout)
         {
             var cts = CancelAfter(timeout);

@@ -33,16 +33,16 @@ namespace System
         /// </summary>
         public bool HasAny { get { return _list != null && _list.Length != 0; } }
 
-#if !UseIteratorTasks
-        async
-#endif
-
         /// <summary>
         /// イベントを起こす。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         /// <returns></returns>
+#if !UseIteratorTasks
+        async
+#endif
+
         public Task InvokeAsync(object sender, TArg args)
         {
             // ↓これだけでいいはずなんだけども、たぶん iOS AOT で動かない。

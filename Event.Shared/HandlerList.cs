@@ -27,8 +27,16 @@ namespace System
         private Handler<TArg>[] _list;
         private object _sync = new object();
 
+        /// <summary>
+        /// 誰かに購読されているかどうか。
+        /// </summary>
         public bool HasAny { get { return _list != null && _list.Length != 0; } }
 
+        /// <summary>
+        /// イベントを通知。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void Invoke(object sender, TArg args)
         {
             // ↓これだけでいいはずなんだけども、たぶん iOS AOT で動かない。
@@ -47,12 +55,21 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// <see cref="IEvent{T}"/>
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public IDisposable Subscribe(Handler<TArg> action)
         {
             Add(action);
             return Disposable.Create(() => Remove(action));
         }
 
+        /// <summary>
+        /// イベントを購読。
+        /// </summary>
+        /// <param name="action"></param>
         public void Add(Handler<TArg> action)
         {
             // こっちは CompareExchage
@@ -64,6 +81,10 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// イベントを購読解除。
+        /// </summary>
+        /// <param name="action"></param>
         public void Remove(Handler<TArg> action)
         {
             lock (_sync)
@@ -84,6 +105,10 @@ namespace System
     /// </remarks>
     public class HandlerList : HandlerList<Null>
     {
+        /// <summary>
+        /// イベントを通知。
+        /// </summary>
+        /// <param name="sender"></param>
         public void Invoke(object sender) { Invoke(sender, null); }
     }
 }

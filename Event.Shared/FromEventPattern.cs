@@ -4,6 +4,15 @@ namespace System
 {
     public static partial class EventExtensions
     {
+        /// <summary>
+        /// 任意のイベントなどから指定した型の<see cref="IEvent{T}"/>に変換する。
+        /// </summary>
+        /// <typeparam name="TEventArg"></typeparam>
+        /// <typeparam name="TEventHandler"></typeparam>
+        /// <param name="addHandler"></param>
+        /// <param name="removeHandler"></param>
+        /// <param name="converter"></param>
+        /// <returns></returns>
         public static IEvent<TEventArg> FromEventPattern<TEventArg, TEventHandler>(
             Action<TEventHandler> addHandler,
             Action<TEventHandler> removeHandler,
