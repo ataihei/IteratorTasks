@@ -25,9 +25,10 @@ namespace IteratorTasks
         public static Task<T> First<T>(CancellationTokenSource cts, params AsyncFunc<T>[] tasks)
         {
             var t = tasks.Select(x => x(cts.Token)).ToArray();
-            return Task.WhenAny<T>(t, cts).OnSuccessWithTask(x =>
+            var any = Task.WhenAny<T>(t);
+            any.ContinueWith(_ => cts.Cancel());
+            return any.OnSuccessWithTask(x =>
             {
-                cts.Cancel();
                 if (x.Exception == null)
                     return Task.FromResult(x.Result);
                 return Task.FromException<T>(x.Exception);
@@ -53,9 +54,10 @@ namespace IteratorTasks
         public static Task First(CancellationTokenSource cts, params AsyncAction[] tasks)
         {
             var t = tasks.Select(x => x(cts.Token)).ToArray();
-            return Task.WhenAny(t, cts).OnSuccessWithTask(x =>
+            var any = Task.WhenAny(t);
+            any.ContinueWith(_ => cts.Cancel());
+            return any.OnSuccessWithTask(x =>
             {
-                cts.Cancel();
                 if (x.Exception == null)
                     return Task.CompletedTask;
                 return Task.FromException(x.Exception);
