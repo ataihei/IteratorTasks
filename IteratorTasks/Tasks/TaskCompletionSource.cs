@@ -3,8 +3,8 @@
 namespace IteratorTasks
 {
     /// <summary>
-    /// 任意のタイミングで完了するタスクを生成するクラス。
-    /// 主に View 側のイベント待ちなどに用いる。
+    /// いわゆる promise。
+    /// Task 非同期以外の非同期処理を Task 化するために使う。
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class TaskCompletionSource<T>
@@ -12,17 +12,17 @@ namespace IteratorTasks
         private Task<T> _task = new Task<T> { Status = TaskStatus.Running };
 
         /// <summary>
-        /// 任意のタイミングで完了するタスク。
+        /// 作った Task。
         /// </summary>
         public Task<T> Task { get { return _task; } }
 
         /// <summary>
-        /// コンストラクタ。
+        /// 既定のスケジューラーを使う。
         /// </summary>
         public TaskCompletionSource() : this(null) { }
 
         /// <summary>
-        /// コンストラクタ。
+        /// スケジューラー指定。
         /// </summary>
         /// <param name="scheduler"></param>
         public TaskCompletionSource(TaskScheduler scheduler)
@@ -33,7 +33,8 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// キャンセルを試行する。すでにタスクが完了済みであれば何も起きない。
+        /// キャンセルする。
+        /// 完了済みの場合は何もしない。
         /// </summary>
         public void TrySetCanceled()
         {
@@ -43,9 +44,9 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// 例外を出すことを試行する。すでにタスクが完了済みであれば何も起きない。
+        /// 例外扱いで終了する。
+        /// 完了済みの場合は何もしない。
         /// </summary>
-        /// <param name="exception"></param>
         public void TrySetException(Exception exception)
         {
             if (_task.IsCompleted)
@@ -54,7 +55,8 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// タスクを正常終了させることを試行する。すでにタスクが完了済みであれば何も起きない。
+        /// 正常終了する。
+        /// 完了済みの場合は何もしない。
         /// </summary>
         /// <param name="result"></param>
         public void TrySetResult(T result)
@@ -65,7 +67,8 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// キャンセルする。すでにタスクが完了済みであれば InvalidOperationException を出す。
+        /// キャンセルする。
+        /// 完了済みのものに対して呼ぶと invalid operation。
         /// </summary>
         public void SetCanceled()
         {
@@ -75,8 +78,10 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// 例外を出す。すでにタスクが完了済みであれば InvalidOperationException を出す。
+        /// 例外扱いで終了する。
+        /// 完了済みのものに対して呼ぶと invalid operation。
         /// </summary>
+        /// <param name="exception"></param>
         public void SetException(Exception exception)
         {
             if (_task.IsCompleted)
@@ -85,8 +90,10 @@ namespace IteratorTasks
         }
 
         /// <summary>
-        /// タスクを正常終了させる。すでにタスクが完了済みであれば InvalidOperationException を出す。
+        /// 正常終了する。
+        /// 完了済みのものに対して呼ぶと invalid operation。
         /// </summary>
+        /// <param name="result"></param>
         public void SetResult(T result)
         {
             if (_task.IsCompleted)

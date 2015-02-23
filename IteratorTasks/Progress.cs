@@ -8,8 +8,15 @@ namespace IteratorTasks
     /// <typeparam name="T">進捗度合を表す型。</typeparam>
     public class Progress<T> : IProgress<T>
     {
+        /// <summary>
+        /// 後から <see cref="ProgressChanged"/> でハンドラーを追加する想定。
+        /// </summary>
         public Progress() { }
 
+        /// <summary>
+        /// 最初からハンドラーを1つ追加するコンストラクター。
+        /// </summary>
+        /// <param name="onProgressChanged"></param>
         public Progress(Action<T> onProgressChanged) { ProgressChanged += onProgressChanged; }
 
         /// <summary>

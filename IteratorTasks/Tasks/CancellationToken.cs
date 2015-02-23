@@ -56,9 +56,11 @@ namespace IteratorTasks
             }
         }
 
+#pragma warning disable 1591
         public static bool operator ==(CancellationToken x, CancellationToken y) { return x._source == y._source; }
         public static bool operator !=(CancellationToken x, CancellationToken y) { return x._source != y._source; }
         public override bool Equals(object obj) { return obj is CancellationToken && _source == ((CancellationToken)obj)._source; }
         public override int GetHashCode() { return _source.GetHashCode(); }
+#pragma warning restore
     }
 }

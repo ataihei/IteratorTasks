@@ -8,6 +8,9 @@ namespace IteratorTasks
     /// </summary>
     public class CancellationTokenSource
     {
+        /// <summary>
+        /// 初期化。
+        /// </summary>
         public CancellationTokenSource()
         {
             Token = new CancellationToken(this);

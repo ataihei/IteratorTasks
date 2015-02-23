@@ -31,6 +31,10 @@ namespace IteratorTasks
 #endif
         }
 
+        /// <summary>
+        /// イテレーターからタスクを作る。
+        /// </summary>
+        /// <param name="routine"></param>
         public Task(IEnumerator routine) : this()
         {
             if (routine == null)
@@ -40,6 +44,10 @@ namespace IteratorTasks
             Routine = routine;
         }
 
+        /// <summary>
+        /// イテレーター生成メソッドを渡してタスクを作る。
+        /// </summary>
+        /// <param name="routine"></param>
         public Task(Func<IEnumerator> routine) : this()
         {
             Status = TaskStatus.Created;
@@ -54,7 +62,7 @@ namespace IteratorTasks
             }
         }
 
-        protected void RunOnce()
+        private void RunOnce()
         {
             try
             {
@@ -83,6 +91,11 @@ namespace IteratorTasks
         /// </summary>
         public AggregateException Exception { get; private set; }
 
+        /// <summary>
+        /// 例外を追加。
+        /// <see cref="TaskCompletionSource{T}"/> とかで、例外を伝搬させるために使う。
+        /// </summary>
+        /// <param name="exc"></param>
         protected void AddError(Exception exc)
         {
             var agg = exc as AggregateException;
@@ -112,8 +125,19 @@ namespace IteratorTasks
         // 今のところ他にいい方法思いつかない。
         private bool _firstRunning;
 
+        /// <summary>
+        /// 正常・例外問わず、完了済みかどうか。
+        /// </summary>
         public bool IsCompleted { get { return Status == TaskStatus.RanToCompletion || IsCanceled || IsFaulted; } }
+
+        /// <summary>
+        /// キャンセルされて終了した。
+        /// </summary>
         public bool IsCanceled { get { return Status == TaskStatus.Canceled; } }
+
+        /// <summary>
+        /// 例外が出て終了した。
+        /// </summary>
         public bool IsFaulted { get { return Status == TaskStatus.Faulted; } }
 
         bool IAwaiter.IsCompleted { get { return IsCompleted; } }
@@ -187,6 +211,9 @@ namespace IteratorTasks
             Routine = null;
         }
 
+        /// <summary>
+        /// 終了処理。
+        /// </summary>
         protected void Complete()
         {
             if (Status == TaskStatus.Canceled)
@@ -345,6 +372,14 @@ namespace IteratorTasks
         /// <returns></returns>
         public static Task Run(Func<CancellationToken, IEnumerator> routine, CancellationTokenSource cts) { return Run(routine, cts, null); }
 
+        /// <summary>
+        /// 開始済みのタスクを作る。
+        /// キャンセル可能。
+        /// </summary>
+        /// <param name="routine"></param>
+        /// <param name="cts"></param>
+        /// <param name="scheduler"></param>
+        /// <returns></returns>
         public static Task Run(Func<CancellationToken, IEnumerator> routine, CancellationTokenSource cts, TaskScheduler scheduler)
         {
             var t = Run(() => routine(cts.Token), scheduler);
@@ -365,10 +400,33 @@ namespace IteratorTasks
             return t;
         }
 
+        /// <summary>
+        /// イテレーターを渡して開始済みのタスクを作る。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="routine"></param>
+        /// <returns></returns>
         public static Task<T> Run<T>(Func<Action<T>, IEnumerator> routine) { return Run(routine, null); }
 
+        /// <summary>
+        /// イテレーターを渡して開始済みのタスクを作る。
+        /// キャンセル可能。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="routine"></param>
+        /// <param name="cts"></param>
+        /// <returns></returns>
         public static Task<T> Run<T>(Func<Action<T>, CancellationToken, IEnumerator> routine, CancellationTokenSource cts) { return Run(routine, cts, null); }
 
+        /// <summary>
+        /// イテレーターを渡して開始済みのタスクを作る。
+        /// キャンセル可能。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="routine"></param>
+        /// <param name="cts"></param>
+        /// <param name="scheduler"></param>
+        /// <returns></returns>
         public static Task<T> Run<T>(Func<Action<T>, CancellationToken, IEnumerator> routine, CancellationTokenSource cts, TaskScheduler scheduler)
         {
             var t = Run<T>(callback => routine(callback, cts.Token), scheduler);
@@ -376,6 +434,13 @@ namespace IteratorTasks
             return t;
         }
 
+        /// <summary>
+        /// イテレーターを渡して開始済みのタスクを作る。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="routine"></param>
+        /// <param name="scheduler"></param>
+        /// <returns></returns>
         public static Task<T> Run<T>(Func<Action<T>, IEnumerator> routine, TaskScheduler scheduler)
         {
             var t = new Task<T>(routine);
@@ -482,6 +547,13 @@ namespace IteratorTasks
             return tcs.Task;
         }
 
+        /// <summary>
+        /// <see cref="ContinueWith(Action{Task})"/> の内部実装。
+        /// <see cref="Task"/> と <see cref="Task{T}"/> での共通処理。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="starter"></param>
+        /// <returns></returns>
         protected Task<T> ContinueWithInternal<T>(Func<Task> starter)
         {
             var tcs = new TaskCompletionSource<T>();
@@ -506,6 +578,13 @@ namespace IteratorTasks
             return tcs.Task;
         }
 
+        /// <summary>
+        /// <see cref="ContinueWith(Action{Task})"/> の内部実装。
+        /// <see cref="Task"/> と <see cref="Task{T}"/> での共通処理。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
         protected Task<T> ContinueWithInternal<T>(Func<T> func)
         {
             var tcs = new TaskCompletionSource<T>(Scheduler);
@@ -544,6 +623,12 @@ namespace IteratorTasks
             return ContinueWithInternal<object>(() => { func(this); return default(object); });
         }
 
+        /// <summary>
+        /// タスク完了後に別の処理を行う。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public Task<T> ContinueWith<T>(Func<Task, T> func)
         {
             return ContinueWithInternal<T>(() => func(this));
@@ -595,7 +680,10 @@ namespace IteratorTasks
             return ContinueWithInternal<T>(() => starter(this));
         }
 
-        [Obsolete]
+        /// <summary>
+        /// 例外に処理済みフラグを立てる。
+        /// </summary>
+        [Obsolete("Exception.IsHandled を使って")]
         public bool IsHandled { get { return Exception == null || Exception.IsHandled; } set { if (Exception != null) Exception.IsHandled = value; } }
     }
 }

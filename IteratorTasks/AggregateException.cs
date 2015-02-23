@@ -19,10 +19,22 @@ namespace IteratorTasks
         public bool IsHandled { get; set; }
 
         private Exception[] _exceptions;
+
+        /// <summary>
+        /// 例外一覧。
+        /// </summary>
         public IEnumerable<Exception> Exceptions { get { return _exceptions; } }
 
+        /// <summary>
+        /// params 配列版。
+        /// </summary>
+        /// <param name="exceptions"></param>
         public AggregateException(params Exception[] exceptions) : this((IEnumerable<Exception>)exceptions) { }
 
+        /// <summary>
+        /// IEnumerable 版。
+        /// </summary>
+        /// <param name="exceptions"></param>
         public AggregateException(IEnumerable<Exception> exceptions)
         {
             _exceptions = exceptions.ToArray();
@@ -38,6 +50,10 @@ namespace IteratorTasks
             _exceptions = _exceptions.Concat(exceptions.Where(e => e != null)).ToArray();
         }
 
+        /// <summary>
+        /// <see cref="Exceptions"/> が1個だけならそれの <see cref="Exception.Message"/> をそのまま、
+        /// 複数なら個数を表示。
+        /// </summary>
         public override string Message
         {
             get
@@ -50,6 +66,10 @@ namespace IteratorTasks
             }
         }
 
+        /// <summary>
+        /// <see cref="Exceptions"/> を全部表示。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

@@ -4,8 +4,16 @@ using System;
 
 namespace System.Reactive.Disposables
 {
+    /// <summary>
+    /// <see cref="IDisposable"/> 関連、ユーティリティ メソッドや拡張。
+    /// </summary>
     public static class Disposable
     {
+        /// <summary>
+        /// Action から <see cref="IDisposable"/> を作る。
+        /// </summary>
+        /// <param name="dispose"><see cref="IDisposable.Dispose"/> で呼びたい処理。</param>
+        /// <returns><see cref="IDisposable"/> 化したもの。</returns>
         public static IDisposable Create(Action dispose)
         {
             return new ActionDisposer(dispose);
