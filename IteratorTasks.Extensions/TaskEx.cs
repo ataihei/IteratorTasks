@@ -27,11 +27,10 @@ namespace IteratorTasks
             var t = tasks.Select(x => x(cts.Token)).ToArray();
             var any = Task.WhenAny<T>(t);
             any.ContinueWith(_ => cts.Cancel());
-            return any.OnSuccessWithTask(x =>
+            return any.OnSuccess(x =>
             {
-                if (x.Exception == null)
-                    return Task.FromResult(x.Result);
-                return Task.FromException<T>(x.Exception);
+                x.ThrowIfException();
+                return x.Result;
             });
         }
 
@@ -56,11 +55,9 @@ namespace IteratorTasks
             var t = tasks.Select(x => x(cts.Token)).ToArray();
             var any = Task.WhenAny(t);
             any.ContinueWith(_ => cts.Cancel());
-            return any.OnSuccessWithTask(x =>
+            return any.OnSuccess(x =>
             {
-                if (x.Exception == null)
-                    return Task.CompletedTask;
-                return Task.FromException(x.Exception);
+                x.ThrowIfException();
             });
         }
     }
