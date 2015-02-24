@@ -24,14 +24,37 @@ namespace IteratorTasks
         /// </summary>
         public static Task<T> First<T>(CancellationTokenSource cts, params AsyncFunc<T>[] tasks)
         {
+            // JITエラー出るので展開
+
+            if (tasks.Length == 0)
+                throw new ArgumentNullException("tasks must contain at least one task", "tasks");
+
             var t = tasks.Select(x => x(cts.Token)).ToArray();
-            var any = Task.WhenAny<T>(t);
-            any.ContinueWith(_ => cts.Cancel());
-            return any.OnSuccess(x =>
+
+            var tcs = new TaskCompletionSource<T>();
+
+            foreach (var task in t)
             {
-                x.ThrowIfException();
-                return x.Result;
-            });
+                task.ContinueWith(x =>
+                    {
+                        if (x.Exception != null)
+                            tcs.TrySetException(x.Exception);
+                        else
+                            tcs.TrySetResult(x.Result);
+                        cts.Cancel();
+                    });
+            }
+
+            return tcs.Task;
+
+            //var t = tasks.Select(x => x(cts.Token)).ToArray();
+            //var any = Task.WhenAny<T>(t);
+            //any.ContinueWith(_ => cts.Cancel());
+            //return any.OnSuccess(x =>
+            //{
+            //    x.ThrowIfException();
+            //    return x.Result;
+            //});
         }
 
         /// <summary>
