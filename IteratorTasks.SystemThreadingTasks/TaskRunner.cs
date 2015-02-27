@@ -53,11 +53,11 @@ namespace IteratorTasks
             {
                 try
                 {
-                    scheduler.Update();
-
                     var delayMilliseconds = scheduler.IsActive ? 5 : 50;
                     await TT.Task.Delay(delayMilliseconds).ConfigureAwait(false);
                     // ↑Delay なし、専用スレッドで回りっぱなしとかがいいかもしれないし。
+
+                    scheduler.Update();
                 }
                 catch (Exception ex)
                 {
