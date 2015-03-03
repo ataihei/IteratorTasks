@@ -22,6 +22,15 @@ namespace System.Reactive.Disposables
         }
 
         /// <summary>
+        /// 追加。
+        /// </summary>
+        /// <param name="onDipose">破棄処理。</param>
+        public void Add(Action onDipose)
+        {
+            _list.Add(new ActionDisposer(onDipose));
+        }
+
+        /// <summary>
         /// グループ内の disposable をまとめて <see cref="IDisposable.Dispose"/>。
         /// </summary>
         public void Dispose()
