@@ -1,6 +1,4 @@
-﻿using System.Reactive.Disposables;
-
-namespace System
+﻿namespace System
 {
     public static partial class EventExtensions
     {
@@ -39,7 +37,7 @@ namespace System
         {
             var h = _converter(action);
             _addHandler(h);
-            return Disposable.Create(() => _removeHandler(h));
+            return new ActionDisposer(() => _removeHandler(h));
         }
     }
 }

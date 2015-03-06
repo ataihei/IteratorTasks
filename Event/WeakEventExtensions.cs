@@ -1,6 +1,4 @@
-﻿using System.Reactive.Disposables;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 弱参照版イベント Subscribe。
