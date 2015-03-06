@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System.Disposables;
+
+namespace System
 {
     /// <summary>
     /// 弱参照版イベント Subscribe。
