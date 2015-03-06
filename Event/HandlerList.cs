@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Disposables;
+using System.Linq;
 
 namespace System
 {
@@ -55,7 +56,7 @@ namespace System
         public IDisposable Subscribe(Handler<TArg> action)
         {
             Add(action);
-            return new ActionDisposer(() => Remove(action));
+            return Disposable.Create(() => Remove(action));
         }
 
         /// <summary>

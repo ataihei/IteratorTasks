@@ -1,6 +1,5 @@
 ﻿// System.Threading.Tasks だけじゃなくて、Rx 系も互換ライブラリを
 
-using System;
 
 namespace System.Reactive.Disposables
 {

@@ -1,4 +1,6 @@
-﻿namespace System.Events
+﻿using System.Disposables;
+
+namespace System.Events
 {
     /// <summary>
     /// <see cref="IEvent{T}"/>に対する拡張メソッド。
