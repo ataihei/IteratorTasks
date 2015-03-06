@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks", "IteratorTasks\IteratorTasks.csproj", "{6C013095-537E-428A-9632-F5B18EE0EDCA}"
 EndProject
@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{018B29
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Event", "Event\Event.csproj", "{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -59,6 +61,10 @@ Global
 		{BEAE8A64-DD04-44B5-8EED-3E54061E4ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEAE8A64-DD04-44B5-8EED-3E54061E4ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEAE8A64-DD04-44B5-8EED-3E54061E4ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
