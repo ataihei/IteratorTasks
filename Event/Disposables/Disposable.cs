@@ -5,16 +5,17 @@ namespace System.Disposables
 {
     /// <summary>
     /// <see cref="IDisposable"/> 関連、ユーティリティ メソッドや拡張。
+    /// Rx とかに同機能のクラスがあるんだけども、で、同じものをここに持つ。
+    /// IteratorTasks 内にも同様のクラスがあるので、public にはそっちを使ってほしい。
     /// </summary>
     /// <remarks>
-    /// アセンブリの依存関係的にこのプロジェクト内にあるのが一番楽だった。
+    /// Rx の同名クラスのサブセット。
+    /// スレッド安全性の確保はやってない。
+    ///z
+    /// IteratorTasks 内にも同様のクラスあり。
     ///
-    /// Rx にほぼ同じ機能のクラスあり。
-    /// こっちの方が、スレッド安全性確保をさぼってる。
-    ///
-    /// IteratorTasks (以下、IT) にも、Rx 互換機能の一環として同機能のクラスあり。
-    ///
-    /// IteratorTasks と System.Threading.Tasks(以下、TT。Rx の Disposables を使う) で呼び分けるのが大変すぎて、結局、IT と TT で別系統の Disposables を持ちたくなくて今にいたる。
+    /// 依存関係の都合で結局ここに定義移した。こっちに統合した方がいいかも。
+    /// IteratorTasks 版と System.Threading.Tasks 版(Rx のものを利用) で呼び分けるのが大変すぎたので。
     /// </remarks>
     public static class Disposable
     {

@@ -38,13 +38,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Disposables\CompositeDisposableExtensions.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventExtensions.cs" />
     <Compile Include="FromEventPattern.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="HandlerList.cs" />
     <Compile Include="IEvent.cs" />
-    <Compile Include="Internal\Disposable.cs" />
+    <Compile Include="Disposables\Disposable.cs" />
     <Compile Include="Null.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeakEventExtensions.cs" />
