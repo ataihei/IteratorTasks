@@ -13,7 +13,6 @@ namespace IteratorTasks
     public class TaskRunner
     {
         private TT.Task _task;
-        private volatile bool _isAlive;
         private ST.CancellationTokenSource _cts = new ST.CancellationTokenSource();
 
         /// <summary>
@@ -48,13 +47,16 @@ namespace IteratorTasks
 
         private async TT.Task UpdateLoop(IT.TaskScheduler scheduler)
         {
-            _isAlive = true;
-            while (_isAlive)
+            while (!_cts.IsCancellationRequested)
             {
                 try
                 {
                     var delayMilliseconds = scheduler.IsActive ? 5 : 50;
-                    await TT.Task.Delay(delayMilliseconds).ConfigureAwait(false);
+                    try
+                    {
+                        await TT.Task.Delay(delayMilliseconds, _cts.Token).ConfigureAwait(false);
+                    }
+                    catch (TT.TaskCanceledException) { }
                     // ↑Delay なし、専用スレッドで回りっぱなしとかがいいかもしれないし。
 
                     scheduler.Update();
@@ -74,7 +76,6 @@ namespace IteratorTasks
         public TT.Task Stop()
         {
             _cts.Cancel();
-            _isAlive = false;
             return _task;
         }
 
