@@ -18,12 +18,25 @@ namespace IteratorTasks
         private volatile bool _isAlive;
         private ST.CancellationTokenSource _cts = new ST.CancellationTokenSource();
 
+        /// <summary>
+        /// 管理下にあるスケジューラー一覧。
+        /// </summary>
         public IEnumerable<IT.TaskScheduler> Schedulers { get { return _schedulers; } }
         private ImmutableList<IT.TaskScheduler> _schedulers = ImmutableList<IT.TaskScheduler>.Empty;
+
+        /// <summary>
+        /// 一斉に止めるためのキャンセル トークン。
+        /// </summary>
         public ST.CancellationToken Token { get { return _cts.Token; } }
 
+        /// <summary>
+        /// エラーが起きていているかどうか。
+        /// </summary>
         public bool HasError { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MultiTaskRunner()
         {
             _task = UpdateLoop();
@@ -55,6 +68,10 @@ namespace IteratorTasks
             }
         }
 
+        /// <summary>
+        /// 停止させる。
+        /// </summary>
+        /// <returns></returns>
         public TT.Task Stop()
         {
             _cts.Cancel();
@@ -62,26 +79,50 @@ namespace IteratorTasks
             return _task;
         }
 
+        /// <summary>
+        /// 追加。
+        /// </summary>
+        /// <param name="s"></param>
         public void Add(IT.TaskScheduler s)
         {
             _schedulers = _schedulers.Add(s);
         }
 
+        /// <summary>
+        /// 削除。
+        /// </summary>
+        /// <param name="s"></param>
         public void Remove(IT.TaskScheduler s)
         {
             _schedulers = _schedulers.Remove(s);
         }
 
+        /// <summary>
+        /// このランナーが止まった時に Completed になるタスク。
+        /// </summary>
         public TT.Task Task { get { return _task; } }
 
+        /// <summary>
+        /// エラーがあった場合に起こすイベント。
+        /// </summary>
         public event EventHandler<ErrorHandlerAgs> Error;
 
+        /// <summary>
+        /// <see cref="Error"/> イベントの引数。
+        /// </summary>
         public class ErrorHandlerAgs
         {
+            /// <summary>
+            /// 起きた例外。
+            /// </summary>
             public Exception Error { get; private set; }
+
+            /// <summary>
+            /// 起きたタスクを実行していたスケジューラー。
+            /// </summary>
             public IT.TaskScheduler Scheduler { get; private set; }
 
-            public ErrorHandlerAgs(Exception error, IT.TaskScheduler scheduler)
+            internal ErrorHandlerAgs(Exception error, IT.TaskScheduler scheduler)
             {
                 Error = error;
                 Scheduler = scheduler;
