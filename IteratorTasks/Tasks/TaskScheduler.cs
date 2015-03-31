@@ -311,9 +311,17 @@ namespace IteratorTasks
                     _continuationActions.Clear();
                 }
 
-                foreach (var action in actions)
+                try
                 {
-                    action();
+                    foreach (var action in actions)
+                    {
+                        action();
+                    }
+                }
+                catch(Exception e)
+                {
+                    // todo ちゃんとハンドルできるようにする
+                    System.Diagnostics.Debug.WriteLine(e);
                 }
             }
         }
