@@ -39,6 +39,9 @@ namespace IteratorTasks
         public static Task Delay(TimeSpan span, CancellationToken ct)
         {
             var ms = span.TotalMilliseconds;
+            if (ms < 0)
+                return Task.CompletedTask;
+
             // Delayの最大待ち時間(約４年)より長い場合はキャンセルされるまで待つタスクになる
             if(int.MaxValue < ms)
             {
