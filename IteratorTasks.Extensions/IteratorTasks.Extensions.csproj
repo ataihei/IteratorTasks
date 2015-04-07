@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncAction.cs" />
+    <Compile Include="AsyncDisposable.cs" />
     <Compile Include="IAsyncDisposable.cs" />
     <Compile Include="TaskEx.TaskStarter.cs" />
     <Compile Include="CompositeDisposableExtensions.cs" />
