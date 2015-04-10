@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Box.cs" />
     <Compile Include="Disposables\CompositeDisposableExtensions.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventExtensions.cs" />
