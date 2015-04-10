@@ -59,7 +59,6 @@
   <ItemGroup>
     <Compile Include="AsyncAction.cs" />
     <Compile Include="AsyncDisposable.cs" />
-    <Compile Include="IAsyncDisposable.cs" />
     <Compile Include="TaskEx.TaskStarter.cs" />
     <Compile Include="CompositeDisposableExtensions.cs" />
     <Compile Include="TaskStarter.cs" />
@@ -70,6 +69,14 @@
     <Compile Include="TaskUtility_Success.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Event.IteratorTasks\Event.IteratorTasks.csproj">
+      <Project>{666165cc-e355-4e1e-b9a1-da61c0d556bc}</Project>
+      <Name>Event.IteratorTasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Event\Event.csproj">
+      <Project>{8bf51265-c380-44e3-9ede-4990c8a1ed9d}</Project>
+      <Name>Event</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IteratorTasks\IteratorTasks.csproj">
       <Project>{6c013095-537e-428a-9632-f5b18ee0edca}</Project>
       <Name>IteratorTasks</Name>
