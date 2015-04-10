@@ -1,4 +1,8 @@
-﻿using IteratorTasks;
+﻿#if UseIteratorTasks
+using IteratorTasks;
+#else
+using System.Threading.Tasks;
+#endif
 
 namespace System
 {
