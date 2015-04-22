@@ -15,7 +15,7 @@ namespace System
     /// ]]>
     /// </example>
     /// <typeparam name="TArg">イベント引数の型。</typeparam>
-    public class HandlerList<TArg> : IEvent<TArg>
+    public class HandlerList<TArg> : IEvent<TArg>, IDisposable
     {
         private Handler<TArg>[] _list;
         private object _sync = new object();
@@ -86,6 +86,14 @@ namespace System
                     ? new Handler<TArg>[] { }
                     : _list.Where(x => x != action).ToArray();
             }
+        }
+
+        /// <summary>
+        /// イベント購読全解除。
+        /// </summary>
+        public void Dispose()
+        {
+            lock (_sync) _list = null;
         }
     }
 
