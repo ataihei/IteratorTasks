@@ -60,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateException.cs" />
-    <Compile Include="Disposable\CompositeDisposable.cs" />
     <Compile Include="Disposable\Disposable.cs" />
     <Compile Include="IAwaiter.cs" />
     <Compile Include="IProgress.cs" />
