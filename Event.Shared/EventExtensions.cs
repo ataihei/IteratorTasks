@@ -17,19 +17,6 @@ namespace System
         #region Task 化、CancellationToken 化
 
         /// <summary>
-        /// イベントが起きた時にキャンセルするキャンセルトークンに変換。
-        /// </summary>
-        /// <typeparam name="TArg"></typeparam>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        public static CancellationToken ToCancellationToken<TArg>(this IEvent<TArg> e)
-        {
-            var cts = new CancellationTokenSource();
-            e.Subscribe(cts.Cancel);
-            return cts.Token;
-        }
-
-        /// <summary>
         /// イベントを1回だけ受け取る。
         /// </summary>
         public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e, CancellationToken ct)
