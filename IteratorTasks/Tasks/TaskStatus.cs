@@ -1,6 +1,9 @@
 ﻿
 namespace IteratorTasks
 {
+    /// <summary>
+    /// タスクの実行状況。
+    /// </summary>
     public enum TaskStatus
     {
         /// <summary>
