@@ -25,6 +25,10 @@ namespace IteratorTasks
 
         internal Task() { }
 
+        /// <summary>
+        /// コルーチンのスタート用関数を渡して初期化。
+        /// </summary>
+        /// <param name="routine">コルーチンのスタート用関数。</param>
         public Task(Func<Action<T>, IEnumerator> routine)
         {
             Status = TaskStatus.Created;
@@ -42,31 +46,64 @@ namespace IteratorTasks
             _result = result;
         }
 
+        /// <summary>
+        /// ターゲットの <see cref="Task"/> が完了したときに非同期に実行する継続タスクを作成します。 
+        /// </summary>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public Task ContinueWith(Action<Task<T>> func)
         {
             return ContinueWithInternal<object>(() => { func(this); return default(object); });
         }
 
+        /// <summary>
+        /// ターゲットの <see cref="Task"/> が完了したときに非同期に実行する継続タスクを作成します。 
+        /// </summary>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public Task<U> ContinueWith<U>(Func<Task<T>, U> func)
         {
             return ContinueWithInternal<U>(() => func(this));
         }
 
+        /// <summary>
+        /// ターゲットの <see cref="Task"/> が完了したときに非同期に実行する継続タスクを作成します。 
+        /// </summary>
+        /// <param name="routine"></param>
+        /// <returns></returns>
         public Task ContinueWithIterator(Func<Task<T>, IEnumerator> routine)
         {
             return ContinueWithInternal<object>(() => Task.Run(() => routine(this), this.Scheduler));
         }
 
+        /// <summary>
+        /// ターゲットの <see cref="Task"/> が完了したときに非同期に実行する継続タスクを作成します。 
+        /// </summary>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="routine"></param>
+        /// <returns></returns>
         public Task<U> ContinueWithIterator<U>(Func<Task<T>, Action<U>, IEnumerator> routine)
         {
             return ContinueWithInternal<U>(() => Task.Run<U>(callback => routine(this, callback), this.Scheduler));
         }
 
+        /// <summary>
+        /// ターゲットの <see cref="Task"/> が完了したときに非同期に実行する継続タスクを作成します。 
+        /// </summary>
+        /// <param name="starter"></param>
+        /// <returns></returns>
         public Task ContinueWithTask(Func<Task<T>, Task> starter)
         {
             return ContinueWithInternal<object>(() => starter(this));
         }
 
+        /// <summary>
+        /// ターゲットの <see cref="Task"/> が完了したときに非同期に実行する継続タスクを作成します。 
+        /// </summary>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="starter"></param>
+        /// <returns></returns>
         public Task<U> ContinueWithTask<U>(Func<Task<T>, Task<U>> starter)
         {
             return ContinueWithInternal<U>(() => starter(this));
