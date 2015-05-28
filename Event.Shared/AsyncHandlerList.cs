@@ -102,6 +102,18 @@ namespace System
                     : _list.Where(x => x != action).ToArray();
             }
         }
+
+        /// <summary>
+        /// <see cref="IDisposable.Dispose"/>
+        /// ハンドラーを全削除。
+        /// </summary>
+        public void Dispose()
+        {
+            lock (_sync)
+            {
+                _list = null;
+            }
+        }
     }
 
     /// <summary>
