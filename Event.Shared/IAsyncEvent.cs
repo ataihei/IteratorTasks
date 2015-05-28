@@ -5,7 +5,7 @@
     /// イベントの Invoke を await しないと行けない場面で使う。
     /// </summary>
     /// <typeparam name="TArg">イベント引数の型。</typeparam>
-    public interface IAsyncEvent<TArg>
+    public interface IAsyncEvent<TArg> : IDisposable
     {
         /// <summary>
         /// ハンドラー追加。
