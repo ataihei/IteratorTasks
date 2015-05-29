@@ -162,6 +162,14 @@ namespace System
         }
 
         /// <summary>
+        /// イベントを購読する。
+        /// </summary>
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Action handler)
+        {
+            return Subscribe(e, (_1, _2) => { handler(); return Task.FromResult(default(object)); });
+        }
+
+        /// <summary>
         /// キャンセルされるまでの間イベントを購読する。
         /// </summary>
         public static void SubscribeUntil<T>(this IAsyncEvent<T> e, CancellationToken ct, AsyncHandler<T> handler)
