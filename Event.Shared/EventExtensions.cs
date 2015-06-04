@@ -19,18 +19,12 @@ namespace System
         /// <summary>
         /// イベントを1回だけ受け取る。
         /// </summary>
-        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e, CancellationToken ct)
-        {
-            return FirstAsync(e, _ => true, ct);
-        }
+        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e, CancellationToken ct) => FirstAsync(e, _ => true, ct);
 
         /// <summary>
         /// イベントを1回だけ受け取る。
         /// </summary>
-        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e)
-        {
-            return FirstAsync(e, CancellationToken.None);
-        }
+        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e) => FirstAsync(e, CancellationToken.None);
 
         /// <summary>
         /// イベントを1回だけ受け取る。
@@ -148,34 +142,22 @@ namespace System
         /// <summary>
         /// イベントを購読する。
         /// </summary>
-        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<T, Task> handler)
-        {
-            return Subscribe(e, (_1, arg) => handler(arg));
-        }
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<T, Task> handler) => Subscribe(e, (_1, arg) => handler(arg));
 
         /// <summary>
         /// イベントを購読する。
         /// </summary>
-        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<Task> handler)
-        {
-            return Subscribe(e, (_1, _2) => handler());
-        }
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Func<Task> handler) => Subscribe(e, (_1, _2) => handler());
 
         /// <summary>
         /// イベントを購読する。
         /// </summary>
-        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Action handler)
-        {
-            return Subscribe(e, (_1, _2) => { handler(); return Task.FromResult(default(object)); });
-        }
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Action handler) => Subscribe(e, (_1, _2) => { handler(); return Task.FromResult(default(object)); });
 
         /// <summary>
         /// イベントを購読する。
         /// </summary>
-        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Action<T> handler)
-        {
-            return Subscribe(e, (_1, args) => { handler(args); return Task.FromResult(default(object)); });
-        }
+        public static IDisposable Subscribe<T>(this IAsyncEvent<T> e, Action<T> handler) => Subscribe(e, (_1, args) => { handler(args); return Task.FromResult(default(object)); });
 
         /// <summary>
         /// キャンセルされるまでの間イベントを購読する。

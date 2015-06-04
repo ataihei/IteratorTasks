@@ -7,7 +7,7 @@ namespace IteratorTasks
         /// <summary>
         /// 複数のタスクのうち、最初に終わったタスクを返す。
         /// </summary>
-        public static Task<Task<T>> WhenAny<T>(params Task<T>[] tasks) { return WhenAny(null, tasks); }
+        public static Task<Task<T>> WhenAny<T>(params Task<T>[] tasks) => WhenAny(null, tasks);
 
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace IteratorTasks
         /// <summary>
         /// 複数のタスクのうち、最初に終わったタスクを返す。
         /// </summary>
-        public static Task<Task> WhenAny(params Task[] tasks) { return WhenAny(null, tasks); }
+        public static Task<Task> WhenAny(params Task[] tasks) => WhenAny(null, tasks);
 
         /// <summary>
         /// 複数のタスクのうち、最初に終わったタスクを返す。

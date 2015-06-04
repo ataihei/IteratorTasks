@@ -16,10 +16,7 @@ namespace System
         public static IEvent<TEventArg> FromEventPattern<TEventArg, TEventHandler>(
             Action<TEventHandler> addHandler,
             Action<TEventHandler> removeHandler,
-            Func<Handler<TEventArg>, TEventHandler> converter)
-        {
-            return new DelegateEventHandler<TEventArg, TEventHandler>(addHandler, removeHandler, converter);
-        }
+            Func<Handler<TEventArg>, TEventHandler> converter) => new DelegateEventHandler<TEventArg, TEventHandler>(addHandler, removeHandler, converter);
     }
 
     class DelegateEventHandler<TEventArg, TEventHandler> : IEvent<TEventArg>

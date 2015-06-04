@@ -14,15 +14,12 @@ namespace System.Events
         /// <param name="e"></param>
         /// <param name="scheduler"></param>
         /// <returns></returns>
-        public static IEvent<T> SubscribeOn<T>(this IEvent<T> e, IteratorTasks.TaskScheduler scheduler)
-        {
-            return Event.Create<T>(handler =>
-                e.Subscribe((sender, x) =>
-                    scheduler.Post(() =>
-                        handler.Invoke(sender, x)
-                    )
-                )
+        public static IEvent<T> SubscribeOn<T>(this IEvent<T> e, IteratorTasks.TaskScheduler scheduler) => Event.Create<T>(handler =>
+                                                                                                                         e.Subscribe((sender, x) =>
+                                                                                                                             scheduler.Post(() =>
+                                                                                                                                 handler.Invoke(sender, x)
+                                                                                                                             )
+                                                                                                                         )
             );
-        }
     }
 }

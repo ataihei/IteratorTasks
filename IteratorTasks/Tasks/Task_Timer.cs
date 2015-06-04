@@ -10,14 +10,14 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="span">返されたタスクを完了する前に待機する時間。</param>
         /// <returns></returns>
-        public static Task Delay(TimeSpan span) { return Delay(span, CancellationToken.None); }
+        public static Task Delay(TimeSpan span) => Delay(span, CancellationToken.None);
 
         /// <summary>
         /// 遅延後に完了するタスクを作成します。
         /// </summary>
         /// <param name="delayMilliseconds">返されたタスクを完了する前までのミリ秒単位の待機時間。</param>
         /// <returns></returns>
-        public static Task Delay(int delayMilliseconds) { return Delay(delayMilliseconds, CancellationToken.None, null); }
+        public static Task Delay(int delayMilliseconds) => Delay(delayMilliseconds, CancellationToken.None, null);
 
         /// <summary>
         /// 遅延後に完了するタスクを作成します。
@@ -25,10 +25,7 @@ namespace IteratorTasks
         /// <param name="delayMilliseconds">返されたタスクを完了する前までのミリ秒単位の待機時間。</param>
         /// <param name="scheduler"></param>
         /// <returns></returns>
-        public static Task Delay(int delayMilliseconds, TaskScheduler scheduler)
-        {
-            return Delay(delayMilliseconds, CancellationToken.None, scheduler);
-        }
+        public static Task Delay(int delayMilliseconds, TaskScheduler scheduler) => Delay(delayMilliseconds, CancellationToken.None, scheduler);
 
         /// <summary>
         /// 遅延後に完了するタスクを作成します。
@@ -58,7 +55,7 @@ namespace IteratorTasks
         /// <param name="delayMilliseconds">返されたタスクを完了する前までのミリ秒単位の待機時間。</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public static Task Delay(int delayMilliseconds, CancellationToken ct) { return Delay(delayMilliseconds, ct, null); }
+        public static Task Delay(int delayMilliseconds, CancellationToken ct) => Delay(delayMilliseconds, ct, null);
 
         /// <summary>
         /// 遅延後に完了するタスクを作成します。

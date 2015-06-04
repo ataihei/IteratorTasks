@@ -14,18 +14,12 @@ namespace System
         /// イベントを購読する。
         /// </summary>
 
-        public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> handler)
-        {
-            return e.Subscribe((_1, arg) => handler(arg));
-        }
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Action<T> handler) => e.Subscribe((_1, arg) => handler(arg));
 
         /// <summary>
         /// イベントを購読する。
         /// </summary>
-        public static IDisposable Subscribe<T>(this IEvent<T> e, Action handler)
-        {
-            return e.Subscribe((_1, _2) => handler());
-        }
+        public static IDisposable Subscribe<T>(this IEvent<T> e, Action handler) => e.Subscribe((_1, _2) => handler());
 
         #region object から具体的な型へのキャスト
 
@@ -61,14 +55,11 @@ namespace System
         /// <summary>
         /// イベントを購読する。
         /// </summary>
-        public static IDisposable Subscribe<T>(this IEvent<object> e, Action<T> handler)
-        {
-            return e.Subscribe((_1, arg) =>
-            {
-                if (arg is T)
-                    handler((T)arg);
-            });
-        }
+        public static IDisposable Subscribe<T>(this IEvent<object> e, Action<T> handler) => e.Subscribe((_1, arg) =>
+                                                                                                      {
+                                                                                                          if (arg is T)
+                                                                                                              handler((T)arg);
+                                                                                                      });
 
         #endregion
     }

@@ -21,13 +21,13 @@ namespace IteratorTasks
         /// <summary>
         /// 管理下にあるスケジューラー一覧。
         /// </summary>
-        public IEnumerable<IT.TaskScheduler> Schedulers { get { return _schedulers; } }
+        public IEnumerable<IT.TaskScheduler> Schedulers => _schedulers;
         private ImmutableList<IT.TaskScheduler> _schedulers = ImmutableList<IT.TaskScheduler>.Empty;
 
         /// <summary>
         /// 一斉に止めるためのキャンセル トークン。
         /// </summary>
-        public ST.CancellationToken Token { get { return _cts.Token; } }
+        public ST.CancellationToken Token => _cts.Token;
 
         /// <summary>
         /// エラーが起きていているかどうか。
@@ -100,7 +100,7 @@ namespace IteratorTasks
         /// <summary>
         /// このランナーが止まった時に Completed になるタスク。
         /// </summary>
-        public TT.Task Task { get { return _task; } }
+        public TT.Task Task => _task;
 
         /// <summary>
         /// エラーがあった場合に起こすイベント。
@@ -115,12 +115,12 @@ namespace IteratorTasks
             /// <summary>
             /// 起きた例外。
             /// </summary>
-            public Exception Error { get; private set; }
+            public Exception Error { get; }
 
             /// <summary>
             /// 起きたタスクを実行していたスケジューラー。
             /// </summary>
-            public IT.TaskScheduler Scheduler { get; private set; }
+            public IT.TaskScheduler Scheduler { get; }
 
             internal ErrorHandlerAgs(Exception error, IT.TaskScheduler scheduler)
             {

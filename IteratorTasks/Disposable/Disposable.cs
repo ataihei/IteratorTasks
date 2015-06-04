@@ -13,10 +13,7 @@ namespace System.Reactive.Disposables
         /// </summary>
         /// <param name="dispose"><see cref="IDisposable.Dispose"/> で呼びたい処理。</param>
         /// <returns><see cref="IDisposable"/> 化したもの。</returns>
-        public static IDisposable Create(Action dispose)
-        {
-            return new ActionDisposer(dispose);
-        }
+        public static IDisposable Create(Action dispose) => new ActionDisposer(dispose);
 
         /// <summary>
         /// 何もしないダミー。

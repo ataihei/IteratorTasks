@@ -23,7 +23,7 @@ namespace IteratorTasks
         /// <summary>
         /// 例外一覧。
         /// </summary>
-        public IEnumerable<Exception> Exceptions { get { return _exceptions; } }
+        public IEnumerable<Exception> Exceptions => _exceptions;
 
         /// <summary>
         /// params 配列版。

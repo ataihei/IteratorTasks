@@ -17,7 +17,7 @@ namespace IteratorTasks
         /// 主に診断用。
         /// スケジューラーのID。
         /// </summary>
-        public int Id { get { return id; } }
+        public int Id => id;
 
         /// <summary>
         /// <see cref="Id"/> を連番で振る。
@@ -92,10 +92,7 @@ namespace IteratorTasks
         /// <summary>
         /// 現在のスケジューラーの状態。
         /// </summary>
-        public TaskSchedulerStatus Status
-        {
-            get { return _status; }
-        }
+        public TaskSchedulerStatus Status => _status;
 
         /// <summary>
         /// タスクをスケジューラーに登録。
@@ -173,32 +170,23 @@ namespace IteratorTasks
         /// <summary>
         /// 現在実行中のタスク。
         /// </summary>
-        public IEnumerable<Task> RunningTasks { get { return _runningTasks; } }
+        public IEnumerable<Task> RunningTasks => _runningTasks;
 
         /// <summary>
         /// 現在サスペンド状態のタスク。
         /// タスクの中で yield return IAwaiter すると、Awaiter の方が終わるまでタスクがサスペンドする。
         /// </summary>
-        public IEnumerable<Task> SuspendedTasks { get { return _suspendedTasks; } }
+        public IEnumerable<Task> SuspendedTasks => _suspendedTasks;
 
         /// <summary>
         /// Running 状態のタスクが1つでもある。
         /// </summary>
-        public bool IsActive
-        {
-            get { return _runningTasks != null && _runningTasks.Length != 0; }
-        }
+        public bool IsActive => _runningTasks != null && _runningTasks.Length != 0;
 
         /// <summary>
         /// Running もしくは Suspended なタスクが1つでもある。
         /// </summary>
-        public bool HasAnyTask
-        {
-            get
-            {
-                return (_runningTasks != null && _runningTasks.Length != 0) || (_suspendedTasks != null && _suspendedTasks.Length != 0);
-            }
-        }
+        public bool HasAnyTask => (_runningTasks != null && _runningTasks.Length != 0) || (_suspendedTasks != null && _suspendedTasks.Length != 0);
 
 
         /// <summary>
@@ -372,10 +360,7 @@ namespace IteratorTasks
             }
         }
 
-        private Task[] GetUnupdatedTasks(IEnumerable<Task> tasks)
-        {
-            return tasks.Where(t => !t._updated).ToArray();
-        }
+        private Task[] GetUnupdatedTasks(IEnumerable<Task> tasks) => tasks.Where(t => !t._updated).ToArray();
 
         private void RunTasks(IEnumerable<Task> tasks)
         {

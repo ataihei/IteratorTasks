@@ -31,7 +31,7 @@ namespace System
         /// <summary>
         /// 1つでもハンドラーが刺さってたら true。
         /// </summary>
-        public bool HasAny { get { return _list != null && _list.Length != 0; } }
+        public bool HasAny => _list != null && _list.Length != 0;
 
         /// <summary>
         /// イベントを起こす。
@@ -131,6 +131,6 @@ namespace System
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        public Task InvokeAsync(object sender) { return InvokeAsync(sender, null); }
+        public Task InvokeAsync(object sender) => InvokeAsync(sender, null);
     }
 }

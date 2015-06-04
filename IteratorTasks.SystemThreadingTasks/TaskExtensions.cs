@@ -14,17 +14,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="scheduler"></param>
         /// <returns></returns>
-        public static TaskRunner BeginUpdate(this TaskScheduler scheduler)
-        {
-#if false
-            // 複数個所で同じスケジューラーに対してこいつを呼ばれるとやばいので、変な挙動した場合、ここの ifdef true にして呼び出し元探してみる。
-            var s = new System.Diagnostics.StackTrace();
-            var sid = scheduler.Id;
-            System.Diagnostics.Debug.WriteLine("scheduler " + sid + "runs on " + s.ToString());
-#endif
-
-            return new TaskRunner(scheduler);
-        }
+        public static TaskRunner BeginUpdate(this TaskScheduler scheduler) => new TaskRunner(scheduler);
 
         /// <summary>
         /// <see cref="TaskScheduler"/> に対して

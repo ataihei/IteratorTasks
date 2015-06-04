@@ -19,7 +19,7 @@ namespace IteratorTasks
         /// <summary>
         /// キャンセル用トークン。
         /// </summary>
-        public CancellationToken Token { get; private set; }
+        public CancellationToken Token { get; }
 
         /// <summary>
         /// キャンセル要求を出したかどうか。
@@ -69,6 +69,6 @@ namespace IteratorTasks
         private Action _canceled;
 
         private Exception _cancelReason;
-        internal Exception CancelReason { get { return _cancelReason; } }
+        internal Exception CancelReason => _cancelReason;
     }
 }
