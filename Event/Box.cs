@@ -28,13 +28,13 @@
         /// 元の値型に変換。
         /// </summary>
         /// <param name="box"></param>
-        public static explicit operator T(Box<T> box) { return box.Value; }
+        public static explicit operator T(Box<T> box) => box.Value;
 
         /// <summary>
         /// 元の値型から変換。
         /// </summary>
         /// <param name="v">ラップしたい値。</param>
-        public static explicit operator Box<T>(T v) { return new Box<T>(v); }
+        public static explicit operator Box<T>(T v) => new Box<T>(v);
     }
 
     /// <summary>
@@ -49,9 +49,6 @@
         /// <param name="v">ラップしたい値。</param>
         /// <returns>変換結果。</returns>
         public static Box<T> Box<T>(this T v)
-            where T : struct
-        {
-            return new Box<T>(v);
-        }
+            where T : struct => new Box<T>(v);
     }
 }

@@ -14,7 +14,7 @@ namespace IteratorTasks
         /// <summary>
         /// 作った Task。
         /// </summary>
-        public Task<T> Task { get { return _task; } }
+        public Task<T> Task => _task;
 
         /// <summary>
         /// 既定のスケジューラーを使う。

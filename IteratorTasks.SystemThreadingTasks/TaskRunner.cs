@@ -18,12 +18,12 @@ namespace IteratorTasks
         /// <summary>
         /// <see cref="IteratorTasks.TaskScheduler"/>
         /// </summary>
-        public IT.TaskScheduler Scheduler { get; private set; }
+        public IT.TaskScheduler Scheduler { get; }
 
         /// <summary>
         /// キャンセルトークン。
         /// </summary>
-        public ST.CancellationToken Token { get { return _cts.Token; } }
+        public ST.CancellationToken Token => _cts.Token;
 
         /// <summary>
         /// エラーが発生したかどうか。
@@ -82,7 +82,7 @@ namespace IteratorTasks
         /// <summary>
         /// <see cref="System.Threading.Tasks.Task"/>
         /// </summary>
-        public TT.Task Task { get { return _task; } }
+        public TT.Task Task => _task;
 
         /// <summary>
         /// 例外発生時のイベント。

@@ -23,7 +23,7 @@ namespace System
         /// <summary>
         /// 誰かに購読されているかどうか。
         /// </summary>
-        public bool HasAny { get { return _list != null && _list.Length != 0; } }
+        public bool HasAny => _list != null && _list.Length != 0;
 
         /// <summary>
         /// イベントを通知。

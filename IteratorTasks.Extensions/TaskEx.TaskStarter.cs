@@ -14,17 +14,14 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="tasks"></param>
         /// <returns></returns>
-        public static Task Sequencial(IEnumerable<TaskStarter> tasks)
-        {
-            return Task.Run(SequencialInternal(tasks));
-        }
+        public static Task Sequencial(IEnumerable<TaskStarter> tasks) => Task.Run(SequencialInternal(tasks));
 
         /// <summary>
         /// <see cref="Sequencial(IEnumerable{TaskStarter})"/>
         /// </summary>
         /// <param name="tasks"></param>
         /// <returns></returns>
-        public static Task Sequencial(params TaskStarter[] tasks) { return Sequencial(tasks.AsEnumerable()); }
+        public static Task Sequencial(params TaskStarter[] tasks) => Sequencial(tasks.AsEnumerable());
 
         private static IEnumerator SequencialInternal(IEnumerable<TaskStarter> tasks)
         {

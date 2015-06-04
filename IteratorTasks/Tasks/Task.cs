@@ -128,19 +128,19 @@ namespace IteratorTasks
         /// <summary>
         /// 正常・例外問わず、完了済みかどうか。
         /// </summary>
-        public bool IsCompleted { get { return Status == TaskStatus.RanToCompletion || IsCanceled || IsFaulted; } }
+        public bool IsCompleted => Status == TaskStatus.RanToCompletion || IsCanceled || IsFaulted;
 
         /// <summary>
         /// キャンセルされて終了した。
         /// </summary>
-        public bool IsCanceled { get { return Status == TaskStatus.Canceled; } }
+        public bool IsCanceled => Status == TaskStatus.Canceled;
 
         /// <summary>
         /// 例外が出て終了した。
         /// </summary>
-        public bool IsFaulted { get { return Status == TaskStatus.Faulted; } }
+        public bool IsFaulted => Status == TaskStatus.Faulted;
 
-        bool IAwaiter.IsCompleted { get { return IsCompleted; } }
+        bool IAwaiter.IsCompleted => IsCompleted;
 
         void IAwaiter.OnCompleted(Action continuation)
         {
@@ -299,12 +299,12 @@ namespace IteratorTasks
         /// <summary>
         /// 既定のタスクスケジューラー。
         /// </summary>
-        public static TaskScheduler DefaultScheduler { get { return ___xxx; } } private static TaskScheduler ___xxx = new TaskScheduler(-1);
+        public static TaskScheduler DefaultScheduler => ___xxx; private static TaskScheduler ___xxx = new TaskScheduler(-1);
 
         /// <summary>
         /// このタスクに紐づいているスケジューラー。
         /// </summary>
-        public TaskScheduler Scheduler { get { return _scheduler ?? DefaultScheduler; } }
+        public TaskScheduler Scheduler => _scheduler ?? DefaultScheduler;
         internal TaskScheduler _scheduler;
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="routine"></param>
         /// <returns></returns>
-        public static Task Run(IEnumerator routine) { return Run(routine, null); }
+        public static Task Run(IEnumerator routine) => Run(routine, null);
 
         /// <summary>
         /// スケジューラーを指定して開始済みのタスクを作る。
@@ -361,7 +361,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="routine"></param>
         /// <returns></returns>
-        public static Task Run(Func<IEnumerator> routine) { return Run(routine, null); }
+        public static Task Run(Func<IEnumerator> routine) => Run(routine, null);
 
         /// <summary>
         /// 開始済みのタスクを作る。
@@ -370,7 +370,7 @@ namespace IteratorTasks
         /// <param name="routine"></param>
         /// <param name="cts"></param>
         /// <returns></returns>
-        public static Task Run(Func<CancellationToken, IEnumerator> routine, CancellationTokenSource cts) { return Run(routine, cts, null); }
+        public static Task Run(Func<CancellationToken, IEnumerator> routine, CancellationTokenSource cts) => Run(routine, cts, null);
 
         /// <summary>
         /// 開始済みのタスクを作る。
@@ -406,7 +406,7 @@ namespace IteratorTasks
         /// <typeparam name="T"></typeparam>
         /// <param name="routine"></param>
         /// <returns></returns>
-        public static Task<T> Run<T>(Func<Action<T>, IEnumerator> routine) { return Run(routine, null); }
+        public static Task<T> Run<T>(Func<Action<T>, IEnumerator> routine) => Run(routine, null);
 
         /// <summary>
         /// イテレーターを渡して開始済みのタスクを作る。
@@ -416,7 +416,7 @@ namespace IteratorTasks
         /// <param name="routine"></param>
         /// <param name="cts"></param>
         /// <returns></returns>
-        public static Task<T> Run<T>(Func<Action<T>, CancellationToken, IEnumerator> routine, CancellationTokenSource cts) { return Run(routine, cts, null); }
+        public static Task<T> Run<T>(Func<Action<T>, CancellationToken, IEnumerator> routine, CancellationTokenSource cts) => Run(routine, cts, null);
 
         /// <summary>
         /// イテレーターを渡して開始済みのタスクを作る。
@@ -452,7 +452,7 @@ namespace IteratorTasks
         /// ただの値をタスク化。
         /// 作ったタスクは、最初から完了済みで、Result で値を取れる。
         /// </summary>
-        public static Task<T> FromResult<T>(T value) { return new Task<T>(value); }
+        public static Task<T> FromResult<T>(T value) => new Task<T>(value);
 
         /// <summary>
         /// 完了済みのタスクを取得する。
@@ -461,13 +461,7 @@ namespace IteratorTasks
         /// その時点でのDefaultSchedularを拾う。
         /// (毎回新しいタスクインスタンスを作成する)
         /// </remarks>
-        public static Task CompletedTask
-        {
-            get
-            {
-                return Task.FromResult<object>(default(object)); ;
-            }
-        }
+        public static Task CompletedTask => Task.FromResult<object>(default(object));
 
         /// <summary>
         /// 例外を直接渡して、最初から完了済みのタスクを作る。
@@ -487,10 +481,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="error"></param>
         /// <returns></returns>
-        public static Task FromException(Exception error)
-        {
-            return FromException<object>(error);
-        }
+        public static Task FromException(Exception error) => FromException<object>(error);
 
         /// <summary>
         /// 複数のタスクが完了するのを待つタスクを作る。
@@ -618,10 +609,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="func"></param>
         /// <returns></returns>
-        public Task ContinueWith(Action<Task> func)
-        {
-            return ContinueWithInternal<object>(() => { func(this); return default(object); });
-        }
+        public Task ContinueWith(Action<Task> func) => ContinueWithInternal<object>(() => { func(this); return default(object); });
 
         /// <summary>
         /// タスク完了後に別の処理を行う。
@@ -629,10 +617,7 @@ namespace IteratorTasks
         /// <typeparam name="T"></typeparam>
         /// <param name="func"></param>
         /// <returns></returns>
-        public Task<T> ContinueWith<T>(Func<Task, T> func)
-        {
-            return ContinueWithInternal<T>(() => func(this));
-        }
+        public Task<T> ContinueWith<T>(Func<Task, T> func) => ContinueWithInternal<T>(() => func(this));
 
         /// <summary>
         /// タスク完了後に別の処理を行う。
@@ -640,10 +625,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="routine"></param>
         /// <returns></returns>
-        public Task ContinueWithIterator(Func<Task, IEnumerator> routine)
-        {
-            return ContinueWithInternal<object>(() => Task.Run(() => routine(this), this.Scheduler));
-        }
+        public Task ContinueWithIterator(Func<Task, IEnumerator> routine) => ContinueWithInternal<object>(() => Task.Run(() => routine(this), this.Scheduler));
 
         /// <summary>
         /// タスク完了後に別の処理を行う。
@@ -652,10 +634,7 @@ namespace IteratorTasks
         /// <typeparam name="T"></typeparam>
         /// <param name="routine"></param>
         /// <returns></returns>
-        public Task<T> ContinueWithIterator<T>(Func<Task, Action<T>, IEnumerator> routine)
-        {
-            return ContinueWithInternal<T>(() => Task.Run<T>(callback => routine(this, callback), this.Scheduler));
-        }
+        public Task<T> ContinueWithIterator<T>(Func<Task, Action<T>, IEnumerator> routine) => ContinueWithInternal<T>(() => Task.Run<T>(callback => routine(this, callback), this.Scheduler));
 
         /// <summary>
         /// タスク完了後に別の処理を行う。
@@ -663,10 +642,7 @@ namespace IteratorTasks
         /// </summary>
         /// <param name="starter"></param>
         /// <returns></returns>
-        public Task ContinueWithTask(Func<Task, Task> starter)
-        {
-            return ContinueWithInternal<object>(() => starter(this));
-        }
+        public Task ContinueWithTask(Func<Task, Task> starter) => ContinueWithInternal<object>(() => starter(this));
 
         /// <summary>
         /// タスク完了後に別の処理を行う。
@@ -675,10 +651,7 @@ namespace IteratorTasks
         /// <typeparam name="T"></typeparam>
         /// <param name="starter"></param>
         /// <returns></returns>
-        public Task<T> ContinueWithTask<T>(Func<Task, Task<T>> starter)
-        {
-            return ContinueWithInternal<T>(() => starter(this));
-        }
+        public Task<T> ContinueWithTask<T>(Func<Task, Task<T>> starter) => ContinueWithInternal<T>(() => starter(this));
 
         /// <summary>
         /// 例外に処理済みフラグを立てる。

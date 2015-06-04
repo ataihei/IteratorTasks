@@ -12,10 +12,7 @@ namespace System.Reactive.Disposables
         /// </summary>
         /// <param name="disposeAsync"><see cref="IAsyncDisposable.DisposeAsync"/> で呼びたい処理。</param>
         /// <returns><see cref="IAsyncDisposable"/> 化したもの。</returns>
-        public static IAsyncDisposable Create(Func<Task> disposeAsync)
-        {
-            return new AsyncActionDisposer(disposeAsync);
-        }
+        public static IAsyncDisposable Create(Func<Task> disposeAsync) => new AsyncActionDisposer(disposeAsync);
     }
 
     internal class AsyncActionDisposer : IAsyncDisposable
@@ -29,9 +26,6 @@ namespace System.Reactive.Disposables
             _onDispose = onDispose;
         }
 
-        public Task DisposeAsync()
-        {
-            return _onDispose();
-        }
+        public Task DisposeAsync() => _onDispose();
     }
 }
