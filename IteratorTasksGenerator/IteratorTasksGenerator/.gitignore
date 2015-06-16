@@ -1,0 +1,15 @@
+*.pidb
+.vs
+*.suo
+*.userprefs
+*/bin/*
+*/obj/*
+*/publish/*
+*/*.sln
+*/*.dll
+*.sln.ide
+packages/
+!GameModel/lib/*.dll
+*.psess
+*.etl
+*.vspx
