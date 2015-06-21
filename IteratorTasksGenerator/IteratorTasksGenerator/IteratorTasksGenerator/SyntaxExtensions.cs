@@ -30,7 +30,7 @@ namespace IteratorTasksGenerator
             return node.AncestorsAndSelf().OfType<MemberDeclarationSyntax>().FirstOrDefault();
         }
 
-        private const string TaskName = "_t";
+        private const string TaskName = "t";
 
         public static IEnumerable<SyntaxNode> CreateFixedYieldReturn(this YieldStatementSyntax yieldStatement, SemanticModel semanticModel)
         {

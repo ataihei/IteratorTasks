@@ -9,10 +9,10 @@ namespace ConsoleApplication1
 
         public IEnumerator MethodName()
         {
-            var _t = _task;
-            if (!_t.IsCompleted)
-                yield return _t;
-            _t.ThrowIfException();
+            var t = _task;
+            if (!t.IsCompleted)
+                yield return t;
+            t.ThrowIfException();
         }
     }
 }
