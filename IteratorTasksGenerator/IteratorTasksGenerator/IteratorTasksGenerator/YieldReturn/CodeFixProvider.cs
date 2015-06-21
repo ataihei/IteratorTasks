@@ -49,7 +49,7 @@ namespace IteratorTasksGenerator
 
             var nodes = yieldStatement.CreateFixedYieldReturn(semanticModel);
             root = root.ReplaceNode(yieldStatement, nodes);
-            return document.WithSyntaxRoot(root.WithAdditionalAnnotations(Formatter.Annotation));
+            return document.WithSyntaxRoot(root);
         }
 
     }
