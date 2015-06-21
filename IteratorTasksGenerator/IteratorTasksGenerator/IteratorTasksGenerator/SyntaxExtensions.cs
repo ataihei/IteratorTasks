@@ -15,12 +15,12 @@ namespace IteratorTasksGenerator
         private static readonly SyntaxToken ReturnKeyword = SyntaxFactory.Token(SyntaxKind.ReturnKeyword);
         private static readonly SyntaxToken BreakKeyword = SyntaxFactory.Token(SyntaxKind.BreakKeyword);
 
-        public static bool IsYiedlReturn(this YieldStatementSyntax node)
+        public static bool IsYieldReturn(this YieldStatementSyntax node)
         {
             return node.ReturnOrBreakKeyword.Text == "return";
         }
 
-        public static bool IsYiedlBreak(this YieldStatementSyntax node)
+        public static bool IsYieldBreak(this YieldStatementSyntax node)
         {
             return node.ReturnOrBreakKeyword == BreakKeyword;
         }
@@ -39,7 +39,7 @@ namespace IteratorTasksGenerator
 
             var task = SyntaxFactory.IdentifierName(TaskName);
             yield return CreateLocalVariableDeclaration(TaskName, yieldStatement.Expression);
-            yield return CreateYieldReturnIfNotComplated(task);
+            yield return CreateYieldReturnIfNotCompleted(task);
             yield return CreateThrowIfException(task);
 
             if (type.TypeArguments.Count() == 1)
@@ -67,10 +67,10 @@ namespace IteratorTasksGenerator
         /// Create If statement that execute yield return if not completed the <see cref="Task"/> or <see cref="Task{T}"/> object.
         /// </summary>
         /// <remarks>
-        /// if (!task.IsComplated)
+        /// if (!task.IsCompleted)
         ///     yield return task;
         /// </remarks>
-        private static SyntaxNode CreateYieldReturnIfNotComplated(IdentifierNameSyntax task)
+        private static SyntaxNode CreateYieldReturnIfNotCompleted(IdentifierNameSyntax task)
         {
             return SyntaxFactory.IfStatement(
                 SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, task, SyntaxFactory.IdentifierName("IsCompleted")),

@@ -33,7 +33,7 @@ namespace IteratorTasksGenerator
         private void AnalyzeYieldReturn(SyntaxNodeAnalysisContext context)
         {
             var yieldStatement = (YieldStatementSyntax)context.Node;
-            if (!yieldStatement.IsYiedlReturn()) { return; }
+            if (!yieldStatement.IsYieldReturn()) { return; }
 
             var typeInfo = context.SemanticModel.GetTypeInfo(yieldStatement.Expression, context.CancellationToken);
             var type = typeInfo.Type as INamedTypeSymbol;
