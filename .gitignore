@@ -8,7 +8,6 @@
 */*.dll
 *.sln.ide
 packages/
-!GameModel/lib/*.dll
 *.psess
 *.etl
 *.vspx
