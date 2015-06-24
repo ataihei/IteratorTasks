@@ -73,7 +73,9 @@ namespace IteratorTasksGenerator
         private static SyntaxNode CreateYieldReturnIfNotCompleted(IdentifierNameSyntax task)
         {
             return SyntaxFactory.IfStatement(
-                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, task, SyntaxFactory.IdentifierName("IsCompleted")),
+                SyntaxFactory.PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, SyntaxFactory.Token(SyntaxKind.ExclamationToken),
+                    SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, task, SyntaxFactory.IdentifierName("IsCompleted"))
+                ),
                 SyntaxFactory.YieldStatement(SyntaxKind.YieldReturnStatement, task)
             );
         }
