@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22609.0
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks", "IteratorTasks\IteratorTasks.csproj", "{6C013095-537E-428A-9632-F5B18EE0EDCA}"
 EndProject
@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{018B29
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Event", "Event\Event.csproj", "{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{11237FB0-59E6-4ACD-93EC-1B44A53B0B64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasksGenerator", "IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator.csproj", "{B2737774-6C83-458F-863D-E430E5D847C7}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -65,8 +69,15 @@ Global
 		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B2737774-6C83-458F-863D-E430E5D847C7} = {11237FB0-59E6-4ACD-93EC-1B44A53B0B64}
 	EndGlobalSection
 EndGlobal
