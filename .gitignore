@@ -2,8 +2,8 @@
 .vs
 *.suo
 *.userprefs
-*/bin/*
-*/obj/*
+bin/
+obj/
 */publish/*
 */*.dll
 *.sln.ide
