@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NullClass</id>
+    <version>1.0.0.0</version>
+    <title>Null class</title>
+    <authors>Orange Cube</authors>
+    <owners>Orange Cube</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>class Null { private Null() { } }</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright</copyright>
+    <tags>Null, Unit</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="*.dll" target="tools\analyzers\" exclude="**\Microsoft.CodeAnalysis.*;**\System.Collections.Immutable.*;**\System.Reflection.Metadata.*" />
+  </files>
+</package>

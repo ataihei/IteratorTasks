@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}</ProjectGuid>
+    <ProjectGuid>{B791CF44-6279-41D1-8268-9011E29FA5CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
-    <AssemblyName>Event</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Null</RootNamespace>
+    <AssemblyName>Null</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,32 +31,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Disposables\CompositeDisposableExtensions.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="EventExtensions.cs" />
-    <Compile Include="FromEventPattern.cs" />
-    <Compile Include="Handler.cs" />
-    <Compile Include="HandlerList.cs" />
-    <Compile Include="IEvent.cs" />
-    <Compile Include="Disposables\Disposable.cs" />
-    <Compile Include="Box.cs" />
+    <Compile Include="Null.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WeakEventExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Null\Null\Null.csproj">
-      <Project>{b791cf44-6279-41d1-8268-9011e29fa5cb}</Project>
-      <Name>Null</Name>
-    </ProjectReference>
+    <None Include="Null.nuspec">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)\packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe" pack Null.nuspec -NoPackageAnalysis -OutputDirectory .</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

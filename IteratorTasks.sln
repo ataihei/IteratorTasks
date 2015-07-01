@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasksGenerator", "IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator.csproj", "{B2737774-6C83-458F-863D-E430E5D847C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Null", "Null\Null\Null.csproj", "{B791CF44-6279-41D1-8268-9011E29FA5CB}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Event.Shared\Event.Shared.projitems*{2e6a4b9d-f0f1-4c40-8cb5-fc6373a87cd6}*SharedItemsImports = 13
@@ -73,6 +75,10 @@ Global
 		{B2737774-6C83-458F-863D-E430E5D847C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2737774-6C83-458F-863D-E430E5D847C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2737774-6C83-458F-863D-E430E5D847C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B791CF44-6279-41D1-8268-9011E29FA5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B791CF44-6279-41D1-8268-9011E29FA5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B791CF44-6279-41D1-8268-9011E29FA5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B791CF44-6279-41D1-8268-9011E29FA5CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

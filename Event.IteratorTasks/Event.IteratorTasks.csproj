@@ -69,6 +69,10 @@
       <Project>{6c013095-537e-428a-9632-f5b18ee0edca}</Project>
       <Name>IteratorTasks</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Null\Null\Null.csproj">
+      <Project>{b791cf44-6279-41d1-8268-9011e29fa5cb}</Project>
+      <Name>Null</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
