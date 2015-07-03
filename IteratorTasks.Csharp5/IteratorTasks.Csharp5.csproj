@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1F51FD19-3FB0-4C59-9927-B126D7C2A0D3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IteratorTasks.Csharp5</RootNamespace>
+    <AssemblyName>IteratorTasks.Csharp5</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncInterop\IteratorTasks\AwaitExtensions.cs" />
+    <Compile Include="AsyncInterop\IteratorTasks\TaskAwaiter.cs" />
+    <Compile Include="AsyncInterop\IteratorTasks\TaskAwaiter`1.cs" />
+    <Compile Include="AsyncInterop\IteratorTasks\YieldAwaitable.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncMethodBuilderCore.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncMethodTaskCache.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncServices.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncTaskMethodBuilder`1.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\IAsyncMethodBuilder.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\IAsyncStateMachine.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\ICriticalNotifyCompletion.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\INotifyCompletion.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\IteratorStateMachineAttribute.cs" />
+    <Compile Include="AsyncInterop\System.Runtime.CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="AsyncInterop\Task.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IteratorTasks\IteratorTasks.csproj">
+      <Project>{6c013095-537e-428a-9632-f5b18ee0edca}</Project>
+      <Name>IteratorTasks</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

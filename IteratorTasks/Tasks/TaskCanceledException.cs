@@ -12,6 +12,13 @@ namespace IteratorTasks
         /// </summary>
         public TaskCanceledException() { }
 
+        private readonly Task _task;
+
+        /// <summary>
+        /// キャンセルしたタスクを指定。
+        /// </summary>
+        public TaskCanceledException(Task task) { _task = task; }
+
         /// <summary>
         /// メッセージ指定。
         /// </summary>
