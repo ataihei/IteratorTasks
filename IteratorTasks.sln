@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{018B29
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Event", "Event\Event.csproj", "{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks.Csharp5", "IteratorTasks.Csharp5\IteratorTasks.Csharp5.csproj", "{1F51FD19-3FB0-4C59-9927-B126D7C2A0D3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Event.Shared\Event.Shared.projitems*{2e6a4b9d-f0f1-4c40-8cb5-fc6373a87cd6}*SharedItemsImports = 13
@@ -65,6 +67,10 @@ Global
 		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BF51265-C380-44E3-9EDE-4990C8A1ED9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F51FD19-3FB0-4C59-9927-B126D7C2A0D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F51FD19-3FB0-4C59-9927-B126D7C2A0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F51FD19-3FB0-4C59-9927-B126D7C2A0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F51FD19-3FB0-4C59-9927-B126D7C2A0D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
