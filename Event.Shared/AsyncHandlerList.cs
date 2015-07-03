@@ -115,22 +115,4 @@ namespace System
             }
         }
     }
-
-    /// <summary>
-    /// 非ジェネリック版。
-    /// </summary>
-    /// <remarks>
-    /// <see cref="Handler{TArg}"/> とは別型にしたいものの、実装がほぼコピペの似て非なるコードになるのがつらすぎて断念した結果。
-    /// void はジェネリックの敵。
-    /// </remarks>
-    public class AsyncHandlerList : AsyncHandlerList<Null>
-    {
-        /// <summary>
-        /// <see cref="AsyncHandlerList{TArg}.InvokeAsync(object, TArg)"/>
-        /// 引数を渡す必要がないので、省略した版。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <returns></returns>
-        public Task InvokeAsync(object sender) => InvokeAsync(sender, null);
-    }
 }

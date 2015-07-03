@@ -96,20 +96,4 @@ namespace System
             lock (_sync) _list = null;
         }
     }
-
-    /// <summary>
-    /// 非ジェネリック版。
-    /// </summary>
-    /// <remarks>
-    /// <see cref="Handler{TArg}"/> とは別型にしたいものの、実装がほぼコピペの似て非なるコードになるのがつらすぎて断念した結果。
-    /// void はジェネリックの敵。
-    /// </remarks>
-    public class HandlerList : HandlerList<Null>
-    {
-        /// <summary>
-        /// イベントを通知。
-        /// </summary>
-        /// <param name="sender"></param>
-        public void Invoke(object sender) { Invoke(sender, null); }
-    }
 }
