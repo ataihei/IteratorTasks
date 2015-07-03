@@ -94,11 +94,11 @@ namespace TestIteratorTasks
             var t1 = Task.Run(TestIteratorOne, scheduler);
             var t2 = Task.Run(TestIteratorTwo, scheduler);
 
-            var a0 = Task.WhenAny(scheduler, null, t0, te1);
+            var a0 = Task.WhenAny(scheduler,  t0, te1);
             a0.ContinueWith(_ => continueWithCount[0] = scheduler.UpdateCount);
-            var a1 = Task.WhenAny(scheduler, null, t1, te1);
+            var a1 = Task.WhenAny(scheduler,  t1, te1);
             a1.ContinueWith(_ => continueWithCount[1] = scheduler.UpdateCount);
-            var a2 = Task.WhenAny(scheduler, null, t2, te1);
+            var a2 = Task.WhenAny(scheduler,  t2, te1);
             a2.ContinueWith(_ => continueWithCount[2] = scheduler.UpdateCount);
 
             scheduler.Update(10);
