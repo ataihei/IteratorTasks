@@ -397,5 +397,15 @@ namespace IteratorTasks
             ct.Register(() => tcs.SetResult(false));
             return tcs.Task;
         }
+
+        /// <summary>
+        /// CancellationToken からキャンセルされたときに完了するタスクを作成する。
+        /// </summary>
+        public static Task<T> ToTask<T>(this CancellationToken ct)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            ct.Register(() => tcs.SetResult(default(T)));
+            return tcs.Task;
+        }
     }
 }
