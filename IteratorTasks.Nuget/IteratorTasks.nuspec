@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>IteratorTasks</id>
+    <version>1.0.0.0</version>
+    <title>IteratorTasks</title>
+    <authors>Orange Cube</authors>
+    <owners>Orange Cube</owners>
+    <licenseUrl>https://github.com/OrangeCube/IteratorTasks/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/OrangeCube/IteratorTasks</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A iterator-based coroutine class library.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright</copyright>
+    <tags>IteratorTasks, analyzers</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+      <file src="IteratorTasks.dll" target="lib\" />
+      <file src="IteratorTasks.pdb" target="lib\" />
+      <file src="IteratorTasks.xml" target="lib\" />
+      <file src="IteratorTasksGenerator.dll" target="tools\analyzers\" exclude="**\Microsoft.CodeAnalysis.*;**\System.Collections.Immutable.*;**\System.Reflection.Metadata.*" />
+      <file src="tools\*.ps1" target="tools\" />
+  </files>
+</package>
