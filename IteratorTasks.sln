@@ -30,6 +30,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks.Csharp5", "It
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIteratorTasksCsharp5", "TestIteratorTasksCsharp5\TestIteratorTasksCsharp5.csproj", "{AB9BCD79-7122-47CB-B1DC-3F82CBD81BD9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{87FC06D9-3730-4CC4-ACC4-F01E92DD8939}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasksGenerator", "IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator.csproj", "{B2737774-6C83-458F-863D-E430E5D847C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasksGenerator.Test", "IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator.Test\IteratorTasksGenerator.Test.csproj", "{86936DD6-5CA6-44CB-8CC6-9CB5FBCA637A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasksGenerator.Vsix", "IteratorTasksGenerator\IteratorTasksGenerator\IteratorTasksGenerator.Vsix\IteratorTasksGenerator.Vsix.csproj", "{7D5AF46C-D9A2-4048-8AE8-04F97B93CE1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IteratorTasks.Nuget", "IteratorTasks.Nuget\IteratorTasks.Nuget.csproj", "{6B1DCF85-38F0-4EC0-8475-CFC692C6E870}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Event.Shared\Event.Shared.projitems*{2e6a4b9d-f0f1-4c40-8cb5-fc6373a87cd6}*SharedItemsImports = 13
@@ -77,8 +87,29 @@ Global
 		{AB9BCD79-7122-47CB-B1DC-3F82CBD81BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9BCD79-7122-47CB-B1DC-3F82CBD81BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB9BCD79-7122-47CB-B1DC-3F82CBD81BD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2737774-6C83-458F-863D-E430E5D847C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86936DD6-5CA6-44CB-8CC6-9CB5FBCA637A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86936DD6-5CA6-44CB-8CC6-9CB5FBCA637A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86936DD6-5CA6-44CB-8CC6-9CB5FBCA637A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86936DD6-5CA6-44CB-8CC6-9CB5FBCA637A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D5AF46C-D9A2-4048-8AE8-04F97B93CE1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5AF46C-D9A2-4048-8AE8-04F97B93CE1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5AF46C-D9A2-4048-8AE8-04F97B93CE1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5AF46C-D9A2-4048-8AE8-04F97B93CE1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1DCF85-38F0-4EC0-8475-CFC692C6E870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1DCF85-38F0-4EC0-8475-CFC692C6E870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1DCF85-38F0-4EC0-8475-CFC692C6E870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1DCF85-38F0-4EC0-8475-CFC692C6E870}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B2737774-6C83-458F-863D-E430E5D847C7} = {87FC06D9-3730-4CC4-ACC4-F01E92DD8939}
+		{86936DD6-5CA6-44CB-8CC6-9CB5FBCA637A} = {87FC06D9-3730-4CC4-ACC4-F01E92DD8939}
+		{7D5AF46C-D9A2-4048-8AE8-04F97B93CE1D} = {87FC06D9-3730-4CC4-ACC4-F01E92DD8939}
 	EndGlobalSection
 EndGlobal
