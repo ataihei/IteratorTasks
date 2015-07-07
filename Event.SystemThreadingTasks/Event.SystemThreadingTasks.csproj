@@ -55,12 +55,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Event\Event.csproj">
-      <Project>{8bf51265-c380-44e3-9ede-4990c8a1ed9d}</Project>
-      <Name>Event</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="..\Event.Shared\Event.Shared.projitems" Label="Shared" Condition="Exists('..\Event.Shared\Event.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

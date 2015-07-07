@@ -5,129 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif
 
-using System.Disposables;
-
 namespace System
 {
     /// <summary>
-    /// <see cref="IEvent{T}"/> と <see cref="Task"/> 相互運用がらみ拡張メソッド。
+    /// <see cref="IAsyncEvent{T}"/> と <see cref="Task"/> 相互運用がらみ拡張メソッド。
     /// </summary>
     public static partial class AysncEventTaskExtensions
     {
-        #region Task 化、CancellationToken 化
-
-        /// <summary>
-        /// イベントを1回だけ受け取る。
-        /// </summary>
-        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e, CancellationToken ct) => FirstAsync(e, _ => true, ct);
-
-        /// <summary>
-        /// イベントを1回だけ受け取る。
-        /// </summary>
-        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e) => FirstAsync(e, CancellationToken.None);
-
-        /// <summary>
-        /// イベントを1回だけ受け取る。
-        /// predicate を満たすまでは何回でもイベントを受け取る。
-        /// </summary>
-        /// <typeparam name="TArg">イベント引数の型。</typeparam>
-        /// <param name="e">イベント発生元。</param>
-        /// <param name="predicate">受け取り条件。</param>
-        /// <param name="ct">キャンセル用。</param>
-        /// <returns>イベントが1回起きるまで待つタスク。</returns>
-        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e, Func<TArg, bool> predicate, CancellationToken ct)
-        {
-            var tcs = new TaskCompletionSource<TArg>();
-
-            IDisposable subscription = null;
-
-            subscription = e.Subscribe((sender, args) =>
-            {
-                if (predicate(args))
-                {
-                    subscription.Dispose();
-                    tcs.TrySetResult(args);
-                }
-            });
-
-            if (ct != CancellationToken.None)
-            {
-                ct.Register(() =>
-                {
-                    subscription.Dispose();
-                    tcs.TrySetCanceled();
-                });
-            }
-
-            return tcs.Task;
-        }
-
-        /// <summary>
-        /// イベントを1回だけ受け取る。
-        /// predicate を満たすまでは何回でもイベントを受け取る。
-        /// predicate が非同期処理なバージョン。
-        /// </summary>
-        public static Task<TArg> FirstAsync<TArg>(this IEvent<TArg> e, Func<TArg, Task<bool>> predicate, CancellationToken ct)
-        {
-            var tcs = new TaskCompletionSource<TArg>();
-
-            IDisposable subscription = null;
-
-            subscription = e.Subscribe((sender, args) =>
-            {
-                predicate(args).ContinueWith(t =>
-                {
-                    if (t.Result)
-                    {
-                        subscription.Dispose();
-                        tcs.TrySetResult(args);
-                    }
-                });
-            });
-
-            if (ct != CancellationToken.None)
-            {
-                ct.Register(() =>
-                {
-                    subscription.Dispose();
-                    tcs.TrySetCanceled();
-                });
-            }
-
-            return tcs.Task;
-        }
-
-        #endregion
-        #region Subscribe
-
-        /// <summary>
-        /// キャンセルされるまでの間イベントを購読する。
-        /// </summary>
-        public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Handler<T> handler)
-        {
-            var d = e.Subscribe(handler);
-            ct.Register(d.Dispose);
-        }
-
-        /// <summary>
-        /// キャンセルされるまでの間イベントを購読する。
-        /// </summary>
-        public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Action<T> handler)
-        {
-            var d = e.Subscribe(handler);
-            ct.Register(d.Dispose);
-        }
-
-        /// <summary>
-        /// キャンセルされるまでの間イベントを購読する。
-        /// </summary>
-        public static void SubscribeUntil<T>(this IEvent<T> e, CancellationToken ct, Action handler)
-        {
-            var d = e.Subscribe(handler);
-            ct.Register(d.Dispose);
-        }
-
-        #endregion
         #region Subscribe 非同期版
 
         /// <summary>
@@ -187,5 +71,32 @@ namespace System
         }
 
         #endregion
+    }
+
+    internal static class Disposable
+    {
+        /// <summary>
+        /// Action から <see cref="IDisposable"/> を作る。
+        /// </summary>
+        /// <param name="dispose"><see cref="IDisposable.Dispose"/> で呼びたい処理。</param>
+        /// <returns><see cref="IDisposable"/> 化したもの。</returns>
+        public static IDisposable Create(Action dispose) => new ActionDisposer(dispose);
+    }
+
+    internal class ActionDisposer : IDisposable
+    {
+        Action _onDispose;
+
+        public ActionDisposer(Action onDispose)
+        {
+            if (onDispose == null)
+                throw new ArgumentNullException();
+            _onDispose = onDispose;
+        }
+
+        public void Dispose()
+        {
+            _onDispose();
+        }
     }
 }
